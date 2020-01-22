@@ -20,11 +20,16 @@ import com.dp.services.profile.response.GenericResponseVO;
 import com.dp.utils.DpUtils;
 import com.dp.utils.ResourceBundleHelper;
 
+/**
+ * The Class RegistrationServiceManager.
+ */
 @Service("registrationManager")
 public class RegistrationServiceManager {
 
+	/** The logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
+	/** The resource bundle helper component. */
 	@Autowired
 	private ResourceBundleHelper resourceBundleHelperComponent;
 
@@ -34,6 +39,7 @@ public class RegistrationServiceManager {
 	@Autowired
 	private ProfileTools profileTools;
 	
+	/** The environment. */
 	@Autowired
 	private Environment environment;
 	
@@ -118,7 +124,9 @@ public class RegistrationServiceManager {
 	}	
 	
 	/**
-	 * @return
+	 * Gets the current user name.
+	 *
+	 * @return the current user name
 	 */
 	public final String getCurrentUserName() {
 		String userName = null;

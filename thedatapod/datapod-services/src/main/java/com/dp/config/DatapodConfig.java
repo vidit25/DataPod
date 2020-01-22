@@ -7,10 +7,18 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
+/**
+ * The Class DatapodConfig.
+ */
 @Configuration
 @ComponentScan(basePackages = { "com.dp" })
 public class DatapodConfig {	
 	
+	/**
+	 * Message source.
+	 *
+	 * @return the message source
+	 */
 	@Bean
 	public MessageSource messageSource() {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();

@@ -28,6 +28,7 @@ import com.dp.services.exception.GenericDaoException;
 @Service("customUserDetailsService")
 public class DpUserDetailsService implements UserDetailsService {
 
+	/** The logger. */
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/** The request. */
@@ -38,11 +39,13 @@ public class DpUserDetailsService implements UserDetailsService {
 	@Autowired
 	private ProfileTools profileTools;
 
-	/*
-	 * (non-Javadoc)
+	
+	/**
+	 * Load user by username.
 	 *
-	 * @see org.springframework.security.core.userdetails.UserDetailsService#
-	 * loadUserByUsername(java.lang.String)
+	 * @param username the username
+	 * @return the user details
+	 * @throws UsernameNotFoundException the username not found exception
 	 */
 	@Override
 	@Transactional

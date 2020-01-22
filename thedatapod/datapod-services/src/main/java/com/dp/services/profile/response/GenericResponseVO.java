@@ -6,21 +6,36 @@ import com.dp.services.exception.GenericException;
 
 
 
+/**
+ * The Class GenericResponseVO.
+ */
 public class GenericResponseVO {
 	
 	/** Variable to represents the error responses. */
 	private String errorResponse;
 
+	/** The errors. */
 	private List<String> errors;
 
+	/** The status. */
 	private String status;
 
+	/** The success. */
 	private boolean success;
 
+	/**
+	 * Instantiates a new generic response VO.
+	 */
 	public GenericResponseVO() {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * Instantiates a new generic response VO.
+	 *
+	 * @param genericDataMarketException the generic data market exception
+	 * @param lMessage the l message
+	 */
 	public GenericResponseVO(GenericException genericDataMarketException, String lMessage) {
 		super();
 		this.setStatus(lMessage);
@@ -28,6 +43,8 @@ public class GenericResponseVO {
 	}
 
 	/**
+	 * Gets the error response.
+	 *
 	 * @return the errorResponse
 	 */
 	public String getErrorResponse() {
@@ -35,6 +52,8 @@ public class GenericResponseVO {
 	}
 
 	/**
+	 * Gets the errors.
+	 *
 	 * @return the errors
 	 */
 	public List<String> getErrors() {
@@ -42,6 +61,8 @@ public class GenericResponseVO {
 	}
 
 	/**
+	 * Gets the status.
+	 *
 	 * @return the status
 	 */
 	public String getStatus() {
@@ -49,6 +70,8 @@ public class GenericResponseVO {
 	}
 
 	/**
+	 * Checks if is success.
+	 *
 	 * @return the success
 	 */
 	public boolean isSuccess() {
@@ -56,32 +79,36 @@ public class GenericResponseVO {
 	}
 
 	/**
-	 * @param errorResponse
-	 *            the errorResponse to set
+	 * Sets the error response.
+	 *
+	 * @param errorResponse            the errorResponse to set
 	 */
 	public void setErrorResponse(String errorResponse) {
 		this.errorResponse = errorResponse;
 	}
 
 	/**
-	 * @param errors
-	 *            the errors to set
+	 * Sets the errors.
+	 *
+	 * @param errors            the errors to set
 	 */
 	public void setErrors(List<String> errors) {
 		this.errors = errors;
 	}
 
 	/**
-	 * @param status
-	 *            the status to set
+	 * Sets the status.
+	 *
+	 * @param status            the status to set
 	 */
 	public void setStatus(String status) {
 		this.status = status;
 	}
 
 	/**
-	 * @param success
-	 *            the success to set
+	 * Sets the success.
+	 *
+	 * @param success            the success to set
 	 */
 	public void setSuccess(boolean success) {
 		this.success = success;

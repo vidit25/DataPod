@@ -8,9 +8,17 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
+/**
+ * The Class ThymeleafConfig.
+ */
 @Configuration
 public class ThymeleafConfig {
 
+	/**
+	 * Spring template engine.
+	 *
+	 * @return the spring template engine
+	 */
 	@Bean
 	public SpringTemplateEngine springTemplateEngine() {
 		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
@@ -18,6 +26,11 @@ public class ThymeleafConfig {
 		return templateEngine;
 	}
 
+	/**
+	 * Html template resolver.
+	 *
+	 * @return the spring resource template resolver
+	 */
 	@Bean
 	public SpringResourceTemplateResolver htmlTemplateResolver() {
 		SpringResourceTemplateResolver emailTemplateResolver = new SpringResourceTemplateResolver();

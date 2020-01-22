@@ -20,13 +20,18 @@ import org.springframework.stereotype.Component;
 
 /**
  * Allows cross origin for testing swagger docs using swagger-ui from local file
- * system
+ * system.
  */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CrossOriginFilter implements Filter {
+	
+	/** The logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
+	/**
+	 * Destroy.
+	 */
 	@Override
 	public void destroy() {
 
@@ -35,6 +40,15 @@ public class CrossOriginFilter implements Filter {
 		// We do not want to do anything here.
 	}
 
+	/**
+	 * Do filter.
+	 *
+	 * @param req the req
+	 * @param resp the resp
+	 * @param chain the chain
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws ServletException the servlet exception
+	 */
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
@@ -53,6 +67,12 @@ public class CrossOriginFilter implements Filter {
 		}
 	}
 
+	/**
+	 * Inits the.
+	 *
+	 * @param filterConfig the filter config
+	 * @throws ServletException the servlet exception
+	 */
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// Called by the web container to indicate to a filter that it is being

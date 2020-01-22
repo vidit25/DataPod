@@ -132,7 +132,7 @@ public class DpAuthenticationManager extends AbstractUserDetailsAuthenticationPr
 	 * @param password the password
 	 * @param user     the user
 	 * @return true, if successful
-	 * @throws GenericDaoException
+	 * @throws GenericDaoException the generic dao exception
 	 */
 	public boolean validatePassword(String username, String password, DpUser user) throws GenericDaoException {
 		String lEncryptedPassword = user.getPassword();

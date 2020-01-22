@@ -46,23 +46,25 @@ AuthorizationServerConfigurerAdapter {
 	@Autowired
 	private PasswordEncoder oauthClientPasswordEncoder;
 	
+	/** The authentication manager bean. */
 	private AuthenticationManager authenticationManagerBean;
 	
-  	@Autowired
+  	/**
+	   * Sets the authentication manager bean.
+	   *
+	   * @param authenticationManagerBean the new authentication manager bean
+	   */
+	  @Autowired
   	public void setAuthenticationManagerBean(AuthenticationManager authenticationManagerBean) {
   		this.authenticationManagerBean = authenticationManagerBean;
   	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Configure.
 	 *
-	 * @see
-	 * org.springframework.security.oauth2.config.annotation.web.configuration
-	 * .AuthorizationServerConfigurerAdapter
-	 * #configure(org.springframework.security
-	 * .oauth2.config.annotation.web.configurers
-	 * .AuthorizationServerEndpointsConfigurer)
+	 * @param endpoints the endpoints
 	 */
+	
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
 		endpoints.tokenStore(tokenStore())
@@ -70,6 +72,11 @@ AuthorizationServerConfigurerAdapter {
 		.userDetailsService(customUserDetailsService);
 	}
 
+	/**
+	 * Configure.
+	 *
+	 * @param oauthServer the oauth server
+	 */
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -85,6 +92,12 @@ AuthorizationServerConfigurerAdapter {
 		.addTokenEndpointAuthenticationFilter(filter);
 	}
 
+	/**
+	 * Configure.
+	 *
+	 * @param clients the clients
+	 * @throws Exception the exception
+	 */
 	/*
 	 * (non-Javadoc)
 	 *

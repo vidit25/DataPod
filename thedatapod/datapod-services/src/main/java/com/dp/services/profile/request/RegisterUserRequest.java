@@ -10,23 +10,32 @@ package com.dp.services.profile.request;
  */
 public class RegisterUserRequest {
 	
+	/** The email. */
 	private String email;
 	
+	/** The phone. */
 	private String phone;
 	
+	/** The first name. */
 	private String firstName;
 	
+	/** The last name. */
 	private String lastName;
 	
+	/** The password. */
 	private String password;
 	
+	/** The type. */
 	private String type;
 	
+	/** The role. */
 	private String role;
 	
 	
 
 	/**
+	 * Gets the email.
+	 *
 	 * @return the email
 	 */
 	public String getEmail() {
@@ -34,6 +43,8 @@ public class RegisterUserRequest {
 	}
 
 	/**
+	 * Sets the email.
+	 *
 	 * @param email the email to set
 	 */
 	public void setEmail(String email) {
@@ -41,6 +52,8 @@ public class RegisterUserRequest {
 	}
 
 	/**
+	 * Gets the phone.
+	 *
 	 * @return the phone
 	 */
 	public String getPhone() {
@@ -48,6 +61,8 @@ public class RegisterUserRequest {
 	}
 
 	/**
+	 * Sets the phone.
+	 *
 	 * @param phone the phone to set
 	 */
 	public void setPhone(String phone) {
@@ -55,6 +70,8 @@ public class RegisterUserRequest {
 	}
 
 	/**
+	 * Gets the first name.
+	 *
 	 * @return the firstName
 	 */
 	public String getFirstName() {
@@ -62,6 +79,8 @@ public class RegisterUserRequest {
 	}
 
 	/**
+	 * Sets the first name.
+	 *
 	 * @param firstName the firstName to set
 	 */
 	public void setFirstName(String firstName) {
@@ -69,6 +88,8 @@ public class RegisterUserRequest {
 	}
 
 	/**
+	 * Gets the last name.
+	 *
 	 * @return the lastName
 	 */
 	public String getLastName() {
@@ -76,6 +97,8 @@ public class RegisterUserRequest {
 	}
 
 	/**
+	 * Sets the last name.
+	 *
 	 * @param lastName the lastName to set
 	 */
 	public void setLastName(String lastName) {
@@ -83,6 +106,8 @@ public class RegisterUserRequest {
 	}
 
 	/**
+	 * Gets the password.
+	 *
 	 * @return the password
 	 */
 	public String getPassword() {
@@ -90,6 +115,8 @@ public class RegisterUserRequest {
 	}
 
 	/**
+	 * Sets the password.
+	 *
 	 * @param password the password to set
 	 */
 	public void setPassword(String password) {
@@ -99,6 +126,8 @@ public class RegisterUserRequest {
 
 	
 	/**
+	 * Gets the type.
+	 *
 	 * @return the type
 	 */
 	public String getType() {
@@ -106,6 +135,8 @@ public class RegisterUserRequest {
 	}
 
 	/**
+	 * Sets the type.
+	 *
 	 * @param type the type to set
 	 */
 	public void setType(String type) {
@@ -113,6 +144,8 @@ public class RegisterUserRequest {
 	}
 
 	/**
+	 * Gets the role.
+	 *
 	 * @return the role
 	 */
 	public String getRole() {
@@ -120,6 +153,8 @@ public class RegisterUserRequest {
 	}
 
 	/**
+	 * Sets the role.
+	 *
 	 * @param role the role to set
 	 */
 	public void setRole(String role) {

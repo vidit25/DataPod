@@ -18,13 +18,18 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 
+/**
+ * The Class AccessControlFilter.
+ */
 public class AccessControlFilter extends GenericFilterBean {
 
 	/** The Constant logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
+	/** The swagger page. */
 	private List<String> swaggerPage;
 
+	/** The api key. */
 	@Value("${apiKey}")
 	private String apiKey;
 
@@ -42,6 +47,15 @@ public class AccessControlFilter extends GenericFilterBean {
 		swaggerPage.add("health");		
 	}
 
+	/**
+	 * Do filter.
+	 *
+	 * @param pRequest the request
+	 * @param pResponse the response
+	 * @param pChain the chain
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws ServletException the servlet exception
+	 */
 	@Override
 	public void doFilter(ServletRequest pRequest, ServletResponse pResponse, FilterChain pChain)
 			throws IOException, ServletException {
