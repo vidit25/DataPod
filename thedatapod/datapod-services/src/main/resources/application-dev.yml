@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: datapod-service-dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/datapoddb
+    username: root
+    password: admin123
+    testWhileIdle: "true"
+    validationQuery: SELECT 1
+    rewriteBatchedStatements: "true"   
+    useServerPrepStmts: "true"
+  jpa:
+    show-sql: "true"
+    hibernate:
+      ddl-auto: update
+      naming: 
+       physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        order_inserts: "true"
+        order_updates: "true"
+        generate_statistics: "true"
+        jdbc:
+         batch_size: 500
+        dialect: org.hibernate.dialect.MySQL5Dialect
+       
+server:
+  port: "8081"
+
+apiKey: AKIARJPM3QSSJFGHPTNO_Dev
