@@ -46,7 +46,7 @@ public class CurrentUserResource {
 	 * @return the map
 	 */
 
-	@GetMapping("/secured/user")
+	@GetMapping("/api/user")
 	public Map<String, Object> currentUser(Principal pPrincipal) {
 		Map<String, Object> userMap = new HashMap<String, Object>();
 		try {

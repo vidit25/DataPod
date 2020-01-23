@@ -27,7 +27,6 @@ public class GenericResponseVO {
 	 * Instantiates a new generic response VO.
 	 */
 	public GenericResponseVO() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

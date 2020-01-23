@@ -24,10 +24,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
 
 	/** The Constant SECURED_WRITE_SCOPE. */
-	private static final String SECURED_CUSTOMER_SCOPE = "#oauth2.hasScope('customer')";
+	private static final String SECURED_USER_SCOPE = "#oauth2.hasAnyScope('superadmin','admin')";
 
 	/** The Constant SECURED_PATTERN. */
-	private static final String SECURED_PATTERN = "/secured/**";
+	private static final String SECURED_PATTERN = "/api/**";
 
 	/**
 	 * Configure.
@@ -41,12 +41,12 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
 				.antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
 				.antMatchers("/v2/api-docs", "/swagger-ui.html", "/webjars/**", "favicon.ico").permitAll()
-				.antMatchers(HttpMethod.POST, SECURED_PATTERN).access(SECURED_CUSTOMER_SCOPE)
+				.antMatchers(HttpMethod.POST, SECURED_PATTERN).access(SECURED_USER_SCOPE)
 				.antMatchers(HttpMethod.GET, "/swagger-resources/**", "/v2/api-docs",
 						"/swagger-ui.html", "/webjars/**", "favicon.ico", "/health", "/info")
-				.permitAll().antMatchers(HttpMethod.GET, SECURED_PATTERN).access(SECURED_CUSTOMER_SCOPE)
-				.antMatchers(HttpMethod.POST, SECURED_PATTERN).access(SECURED_CUSTOMER_SCOPE)
-				.antMatchers(HttpMethod.DELETE, SECURED_PATTERN).access(SECURED_CUSTOMER_SCOPE).anyRequest().permitAll()
+				.permitAll().antMatchers(HttpMethod.GET, SECURED_PATTERN).access(SECURED_USER_SCOPE)
+				.antMatchers(HttpMethod.POST, SECURED_PATTERN).access(SECURED_USER_SCOPE)
+				.antMatchers(HttpMethod.DELETE, SECURED_PATTERN).access(SECURED_USER_SCOPE).anyRequest().permitAll()
 				.and().csrf().disable();
 
 	}
