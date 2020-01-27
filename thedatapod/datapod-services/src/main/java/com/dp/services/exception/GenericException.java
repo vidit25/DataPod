@@ -11,10 +11,10 @@ public class GenericException extends Exception {
 	private static final long serialVersionUID = 6751772861292593264L;
 
 	/** Variable that represents the error code. */
-	private String errCode;
+	private int errCode;
 
 	/** Variable that represents the error level. */
-	private String errLevel;
+	private String errLabel;
 
 	/** Variable that represents the error reason. */
 	private String errReason;
@@ -26,9 +26,27 @@ public class GenericException extends Exception {
 
 	}
 
+	/**
+	 * Instantiates a new generic exception.
+	 *
+	 * @param lE the l E
+	 */
 	public GenericException(Exception lE) {
 		// TODO Auto-generated constructor stub
 		super(lE);
+	}
+	
+	/**
+	 * Instantiates a new generic exception.
+	 *
+	 * @param errorCode the error code
+	 * @param label the label
+	 * @param message the message
+	 */
+	public GenericException(int errorCode, String label, String message) {
+		this.errCode = errorCode;
+		this.errLabel= label;
+		this.errReason = message;
 	}
 
 	/**
@@ -71,20 +89,26 @@ public class GenericException extends Exception {
 	}
 
 	/**
+	 * Gets the err code.
+	 *
 	 * @return the errCode
 	 */
-	public String getErrCode() {
+	public int getErrCode() {
 		return errCode;
 	}
 
 	/**
+	 * Gets the err level.
+	 *
 	 * @return the errLevel
 	 */
 	public String getErrLevel() {
-		return errLevel;
+		return errLabel;
 	}
 
 	/**
+	 * Gets the err reason.
+	 *
 	 * @return the errReason
 	 */
 	public String getErrReason() {
@@ -92,24 +116,27 @@ public class GenericException extends Exception {
 	}
 
 	/**
-	 * @param errCode
-	 *            the errCode to set
+	 * Sets the err code.
+	 *
+	 * @param errCode            the errCode to set
 	 */
-	public void setErrCode(String errCode) {
+	public void setErrCode(int errCode) {
 		this.errCode = errCode;
 	}
 
 	/**
-	 * @param errLevel
-	 *            the errLevel to set
+	 * Sets the err level.
+	 *
+	 * @param errLevel            the errLevel to set
 	 */
 	public void setErrLevel(String errLevel) {
-		this.errLevel = errLevel;
+		this.errLabel = errLevel;
 	}
 
 	/**
-	 * @param errReason
-	 *            the errReason to set
+	 * Sets the err reason.
+	 *
+	 * @param errReason            the errReason to set
 	 */
 	public void setErrReason(String errReason) {
 		this.errReason = errReason;

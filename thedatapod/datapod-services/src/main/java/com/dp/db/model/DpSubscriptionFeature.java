@@ -6,31 +6,52 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
-import org.springframework.security.core.GrantedAuthority;
 
-/**
- * The Class CBAuthority.
- */
+
 @Entity
-@Table(name = "authority", uniqueConstraints = { @UniqueConstraint(columnNames = { "name" }) })
-public class DpAuthority implements GrantedAuthority {
+@Table(name = "feature")
+public class DpSubscriptionFeature implements java.io.Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 4326002382767524025L;
+	private static final long serialVersionUID = -5221266571631540723L;
 
 	/** The id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name = "feature_id")
 	private Integer id;
 
 	/** The name. */
 	@Column(name = "name")
 	private String name;
+	
+	/** The description. */
+	@Column(name = "description")
+	private String description;
+	
+	
+	
+
+	/**
+	 * Gets the description.
+	 *
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * Sets the description.
+	 *
+	 * @param description the new description
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	/**
 	 * Gets the id.
@@ -68,8 +89,6 @@ public class DpAuthority implements GrantedAuthority {
 		this.name = name;
 	}
 
-	public String getAuthority() {
-		return getName();
-	}
+	
 
 }

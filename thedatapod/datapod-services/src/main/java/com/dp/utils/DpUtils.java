@@ -1,17 +1,22 @@
 package com.dp.utils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.dp.services.response.ErrorResponseVO;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * The Class DpUtils.
+ */
 public class DpUtils {
 	
 	/**
@@ -33,6 +38,13 @@ public class DpUtils {
 		return lIsEmpty;
 	}
 	
+	/**
+	 * Match password.
+	 *
+	 * @param password the password
+	 * @param encriptedPassword the encripted password
+	 * @return true, if successful
+	 */
 	public static boolean matchPassword(String password, String encriptedPassword) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		return passwordEncoder.matches(password, encriptedPassword);
@@ -50,6 +62,14 @@ public class DpUtils {
 		return passwordEncoder.encode(data);
 	}
 	
+	/**
+	 * Generate error response.
+	 *
+	 * @param errorMessage the error message
+	 * @param errors the errors
+	 * @param status the status
+	 * @return the map
+	 */
 	public static Map<String, Object> generateErrorResponse(String errorMessage, 
 			List<String> errors, String status) {
 		Map<String, Object> errorResponse = new HashMap<String, Object>();
@@ -91,6 +111,21 @@ public class DpUtils {
 		Map<String, Object> responseMap = mapper.convertValue(pObj, 
 				new TypeReference<Map<String, Object>>() {});
 		return responseMap;
+    }
+    
+    /**
+     * Generate error msg.
+     *
+     * @param pErrorCode the error code
+     * @param pErrorLabel the error label
+     * @param pMessage the message
+     * @return the list
+     */
+    public static List<ErrorResponseVO> generateErrorMsg(int pErrorCode, String pErrorLabel, String pMessage) {
+    	List<ErrorResponseVO> errors = new ArrayList<>();
+    	ErrorResponseVO errorMsg = new ErrorResponseVO(pErrorCode, pErrorLabel, pMessage);
+    	errors.add(errorMsg);
+    	return errors;
     }
 
 }
