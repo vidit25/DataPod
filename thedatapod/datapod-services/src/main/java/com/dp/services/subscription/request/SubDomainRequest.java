@@ -55,7 +55,7 @@ public class SubDomainRequest {
 	/**
 	 * Sets the sub domain id.
 	 *
-	 * @param subDomainId the new sub domain id
+	 * @param id the new id
 	 */
 	public void setId(Integer id) {
 		this.id = id;

@@ -146,7 +146,6 @@ public class DomainResource {
 	/**
 	 * Handle link sub domain.
 	 *
-	 * @param pRequest the request
 	 * @param apiKey the api key
 	 * @return the generic response VO
 	 */
@@ -183,6 +182,13 @@ public class DomainResource {
 		return domainResponse;
 	}
 	
+	/**
+	 * Handle get domain by id.
+	 *
+	 * @param apiKey the api key
+	 * @param domainId the domain id
+	 * @return the generic response VO
+	 */
 	@GetMapping(path = "/api/domain/{domainId}")
 	public @ResponseBody GenericResponseVO handleGetDomainById(@RequestHeader(name = "x-api-Key") String apiKey,
 			@PathVariable String domainId) {
@@ -203,11 +209,24 @@ public class DomainResource {
 			List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(e.getErrCode(), 
 					e.getErrLevel(), lMessage);
 			domainResponse = new GenericResponseVO(false, errorMsg);
-		} 
+			LOGGER.error(e.getMessage(), e);
+		} catch(Exception e) {
+			List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(Error.SYSTEM_ERROR.getCode(),
+					Error.SYSTEM_ERROR.getLabel(), e.getMessage());
+			domainResponse = new GenericResponseVO(false, errorMsg);
+			LOGGER.error(e.getMessage(), e);
+		}
 		LOGGER.debug("DomainResource: handleGetDomainById - request handled");
 		return domainResponse;
 	}
 	
+	/**
+	 * Handle get sub domain by id.
+	 *
+	 * @param apiKey the api key
+	 * @param domainId the domain id
+	 * @return the generic response VO
+	 */
 	@GetMapping(path = "/api/domain/sub-domain/{domainId}")
 	public @ResponseBody GenericResponseVO handleGetSubDomainById(@RequestHeader(name = "x-api-Key") String apiKey,
 			@PathVariable String domainId) {
@@ -228,7 +247,13 @@ public class DomainResource {
 			List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(e.getErrCode(), 
 					e.getErrLevel(), lMessage);
 			domainResponse = new GenericResponseVO(false, errorMsg);
-		} 
+			LOGGER.error(e.getMessage(), e);
+		} catch(Exception e) {
+			List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(Error.SYSTEM_ERROR.getCode(),
+					Error.SYSTEM_ERROR.getLabel(), e.getMessage());
+			domainResponse = new GenericResponseVO(false, errorMsg);
+			LOGGER.error(e.getMessage(), e);
+		}
 		LOGGER.debug("DomainResource: handleGetSubDomainById - request handled");
 		return domainResponse;
 	}
