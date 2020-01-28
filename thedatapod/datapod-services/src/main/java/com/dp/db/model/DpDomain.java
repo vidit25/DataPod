@@ -1,6 +1,7 @@
 package com.dp.db.model;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -11,11 +12,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 
 
 /**
@@ -23,6 +26,7 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name = "domains", uniqueConstraints = { @UniqueConstraint(columnNames = { "name" }) }, catalog = "datapoddb")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DpDomain implements java.io.Serializable {
 
 	/** The Constant serialVersionUID. */
@@ -42,8 +46,8 @@ public class DpDomain implements java.io.Serializable {
 	@Column(name = "description")
 	private String description;
 	
-	/** The sub domains. */
-	@OneToMany(fetch = FetchType.EAGER)
+	/** The sub domains. */	
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "domains_sub_domain_rel", joinColumns = @JoinColumn(name = "domain_id", referencedColumnName = "domain_id"), inverseJoinColumns = @JoinColumn(name = "sub_domain_id", referencedColumnName = "sub_domain_id"))
 	@OrderBy
 	private List<DpSubDomain> subDomains;
@@ -62,6 +66,7 @@ public class DpDomain implements java.io.Serializable {
 	 *
 	 * @return the sub domains
 	 */
+	
 	public List<DpSubDomain> getSubDomains() {
 		return subDomains;
 	}

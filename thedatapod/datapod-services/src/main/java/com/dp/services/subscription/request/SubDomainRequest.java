@@ -11,10 +11,10 @@ package com.dp.services.subscription.request;
 public class SubDomainRequest {
 	
 	/** The domain id. */
-	private long domainId;
+	private Integer domainId;
 	
 	/** The sub domain id. */
-	private long id;
+	private Integer id;
 
 	/** The name. */
 	private String name;
@@ -30,7 +30,7 @@ public class SubDomainRequest {
 	 *
 	 * @return the domain id
 	 */
-	public long getDomainId() {
+	public Integer getDomainId() {
 		return domainId;
 	}
 
@@ -39,7 +39,7 @@ public class SubDomainRequest {
 	 *
 	 * @param domainId the new domain id
 	 */
-	public void setDomainId(long domainId) {
+	public void setDomainId(Integer domainId) {
 		this.domainId = domainId;
 	}
 
@@ -48,7 +48,7 @@ public class SubDomainRequest {
 	 *
 	 * @return the sub domain id
 	 */
-	public long getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -57,7 +57,7 @@ public class SubDomainRequest {
 	 *
 	 * @param subDomainId the new sub domain id
 	 */
-	public void setId(long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

@@ -1,6 +1,9 @@
 spring:
   application:
     name: datapod-service-dev
+  jackson:
+   serialization:
+    FAIL_ON_EMPTY_BEANS: false
   datasource:
     url: jdbc:mysql://localhost:3306/datapoddb
     username: root

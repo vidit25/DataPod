@@ -1,5 +1,7 @@
 package com.dp.services.subscription.request;
 
+import java.util.List;
+
 
 
 /**
@@ -11,7 +13,7 @@ package com.dp.services.subscription.request;
 public class DomainRequest {
 	
 	/** The id. */
-	private Long id;
+	private Integer id;
 
 	/** The name. */
 	private String name;
@@ -21,13 +23,15 @@ public class DomainRequest {
 
 	/** The status. */
 	private String status;
+	
+	private List<Integer> subDomainIds;
 
 	/**
 	 * Gets the id.
 	 *
 	 * @return the id
 	 */
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -36,7 +40,7 @@ public class DomainRequest {
 	 *
 	 * @param id the new id
 	 */
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -92,6 +96,14 @@ public class DomainRequest {
 	 */
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public List<Integer> getSubDomainIds() {
+		return subDomainIds;
+	}
+
+	public void setSubDomainIds(List<Integer> subDomainIds) {
+		this.subDomainIds = subDomainIds;
 	}
 	
 }

@@ -7,12 +7,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+
 
 /**
  * The Class DpDomain.
  */
 @Entity
 @Table(name = "sub_domains")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DpSubDomain implements java.io.Serializable {
 
 	/** The Constant serialVersionUID. */

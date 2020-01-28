@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dp.utils.DpUtils;
 import com.dp.utils.ResourceBundleHelper;
+import com.dp.services.constants.Error;
 import com.dp.services.exception.GenericException;
 import com.dp.services.response.ErrorResponseVO;
 import com.dp.services.response.GenericResponseVO;
@@ -146,7 +149,7 @@ public class DomainResource {
 	 * @param apiKey the api key
 	 * @return the generic response VO
 	 */
-	@PostMapping(value = "/api/link-sub-domain")
+	/*@PostMapping(value = "/api/link-sub-domain")
 	public @ResponseBody GenericResponseVO handleLinkSubDomain(@RequestBody SubDomainRequest pRequest,
 			@RequestHeader(name = "x-api-Key") String apiKey) {
 		GenericResponseVO domainResponse = new GenericResponseVO();
@@ -160,6 +163,72 @@ public class DomainResource {
 			domainResponse = new GenericResponseVO(false, errorMsg);
 		} 
 		LOGGER.debug("DomainResource: handleLinkSubDomain - request handled");
+		return domainResponse;
+	}*/
+	
+	@GetMapping(value = "/api/get-all-domain")
+	public @ResponseBody GenericResponseVO handleGetAllDomain(@RequestHeader(name = "x-api-Key") String apiKey) {
+		GenericResponseVO domainResponse = new GenericResponseVO();
+		LOGGER.debug("DomainResource: handleGetAllDomain - request ");
+		try {
+			domainResponse = domainManager.getAllDomain();			
+		} catch (GenericException e) {
+			String lMessage = resourceBundleHelperComponent.getMessage(e.getErrLevel(), null);
+			List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(e.getErrCode(), 
+					e.getErrLevel(), lMessage);
+			domainResponse = new GenericResponseVO(false, errorMsg);
+		} 
+		LOGGER.debug("DomainResource: handleGetAllDomain - request handled");
+		return domainResponse;
+	}
+	
+	@GetMapping(path = "/api/get-domain/{domainId}")
+	public @ResponseBody GenericResponseVO handleGetDomainById(@RequestHeader(name = "x-api-Key") String apiKey,
+			@PathVariable String domainId) {
+		GenericResponseVO domainResponse = new GenericResponseVO();
+		LOGGER.debug("DomainResource: handleGetDomainById - request ");
+		try {
+			if (!DpUtils.isEmptyString(domainId)) {
+				domainResponse = domainManager.getDomainById(Integer.valueOf(domainId));
+			} else {
+				LOGGER.error("handleGetDomainById: DOMAIN_ID_MISSING");
+				String message = resourceBundleHelperComponent.getMessage(Error.DOMAIN_ID_MISSING.getLabel(), null);
+				List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(Error.DOMAIN_ID_MISSING.getCode(), 
+						Error.DOMAIN_ID_MISSING.getLabel(), message);
+				domainResponse = new GenericResponseVO(false, errorMsg);
+			}
+		} catch (GenericException e) {
+			String lMessage = resourceBundleHelperComponent.getMessage(e.getErrLevel(), null);
+			List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(e.getErrCode(), 
+					e.getErrLevel(), lMessage);
+			domainResponse = new GenericResponseVO(false, errorMsg);
+		} 
+		LOGGER.debug("DomainResource: handleGetDomainById - request handled");
+		return domainResponse;
+	}
+	
+	@GetMapping(path = "/api/get-sub-domain/{domainId}")
+	public @ResponseBody GenericResponseVO handleGetSubDomainById(@RequestHeader(name = "x-api-Key") String apiKey,
+			@PathVariable String domainId) {
+		GenericResponseVO domainResponse = new GenericResponseVO();
+		LOGGER.debug("DomainResource: handleGetSubDomainById - request ");
+		try {
+			if (!DpUtils.isEmptyString(domainId)) {
+				domainResponse = domainManager.getDomainById(Integer.valueOf(domainId));
+			} else {
+				LOGGER.error("handleGetSubDomainById: DOMAIN_ID_MISSING");
+				String message = resourceBundleHelperComponent.getMessage(Error.DOMAIN_ID_MISSING.getLabel(), null);
+				List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(Error.DOMAIN_ID_MISSING.getCode(), 
+						Error.DOMAIN_ID_MISSING.getLabel(), message);
+				domainResponse = new GenericResponseVO(false, errorMsg);
+			}
+		} catch (GenericException e) {
+			String lMessage = resourceBundleHelperComponent.getMessage(e.getErrLevel(), null);
+			List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(e.getErrCode(), 
+					e.getErrLevel(), lMessage);
+			domainResponse = new GenericResponseVO(false, errorMsg);
+		} 
+		LOGGER.debug("DomainResource: handleGetSubDomainById - request handled");
 		return domainResponse;
 	}
 	

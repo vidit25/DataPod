@@ -1,6 +1,10 @@
 package com.dp.services.response;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.dp.services.constants.DpConstants;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 
 
@@ -8,11 +12,12 @@ import java.util.List;
 /**
  * The Class GenericResponseVO.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class GenericResponseVO {
 	
 	
 	/** The errors. */
-	private List<ErrorResponseVO> errors;
+	private List<ErrorResponseVO> errors = new ArrayList<ErrorResponseVO>();
 	
 	/** The success. */
 	private boolean success;

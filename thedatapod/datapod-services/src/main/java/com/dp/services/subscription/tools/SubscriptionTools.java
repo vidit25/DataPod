@@ -2,7 +2,9 @@ package com.dp.services.subscription.tools;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,7 @@ import com.dp.db.repository.SubDomainRepository;
 import com.dp.services.exception.GenericDaoException;
 import com.dp.services.constants.Domain;
 import com.dp.services.constants.Error;
+import com.dp.utils.DpUtils;
 import com.dp.utils.ResourceBundleHelper;
 
 import org.slf4j.Logger;
@@ -83,9 +86,19 @@ public class SubscriptionTools {
 			throw new GenericDaoException(Error.DOMAIN_ID_MISSING.getCode(), 
 					Error.DOMAIN_ID_MISSING.getLabel(), Error.DOMAIN_ID_MISSING.getValue());
 		}
-		DpDomain domain = domainRepository.getOne(pDomain.getId().intValue());
-		if (domain != null) {
-			DpDomain updatedDomain = domainRepository.save(pDomain);
+		DpDomain domain = getDomain(pDomain.getId().intValue());
+		if (domain != null && domain.getId() != null) {
+			String status = pDomain.getStatus();
+			if (DpUtils.isEmptyString(pDomain.getStatus())) {
+				status = domain.getStatus();
+			}
+			List<DpSubDomain> subDomains = domain.getSubDomains();
+			BeanUtils.copyProperties(pDomain, domain);
+			domain.setStatus(status);
+			if (subDomains != null && !subDomains.isEmpty()) {
+				domain.setSubDomains(subDomains);
+			}
+			DpDomain updatedDomain = domainRepository.save(domain);
 			// fetch the domain
 			return updatedDomain;
 		} else {
@@ -93,6 +106,12 @@ public class SubscriptionTools {
 			throw new GenericDaoException(Error.DOMAIN_NOT_FOUND.getCode(), 
 					Error.DOMAIN_NOT_FOUND.getLabel(), Error.DOMAIN_NOT_FOUND.getValue());
 		}
+	}
+	
+	public List<DpDomain> getAllDomains() throws GenericDaoException {
+		List<DpDomain> domains = null;
+		domains = domainRepository.findAll();
+		return domains;
 	}
 	
 	/**
@@ -132,9 +151,15 @@ public class SubscriptionTools {
 			throw new GenericDaoException(Error.DOMAIN_ID_MISSING.getCode(), 
 					Error.DOMAIN_ID_MISSING.getLabel(), Error.DOMAIN_ID_MISSING.getValue());
 		}
-		DpSubDomain domain = subDomainRepository.getOne(pSubDomain.getId().intValue());
-		if (domain != null) {
-			DpSubDomain updatedDomain = subDomainRepository.save(pSubDomain);
+		DpSubDomain domain = getSubDomain(pSubDomain.getId().intValue());
+		if (domain != null && domain.getId() != null) {
+			String status = pSubDomain.getStatus();
+			if (DpUtils.isEmptyString(pSubDomain.getStatus())) {
+				status = domain.getStatus();
+			}
+			BeanUtils.copyProperties(pSubDomain, domain);
+			domain.setStatus(status);
+			DpSubDomain updatedDomain = subDomainRepository.save(domain);
 			// fetch the sub domain
 			return updatedDomain;
 		} else {
@@ -143,6 +168,24 @@ public class SubscriptionTools {
 					Error.DOMAIN_NOT_FOUND.getLabel(), Error.DOMAIN_NOT_FOUND.getValue());
 		}
 	}
+	
+	public void linkSubDomainToDomain(DpSubDomain pSubDomain, Integer pDomainId) throws GenericDaoException {
+		if (pDomainId != null) {
+			DpDomain domain = getDomain(pDomainId.intValue());
+			if (domain != null) {
+				List<DpSubDomain> subDomains = domain.getSubDomains();
+				if (subDomains == null) {
+					subDomains = new ArrayList<DpSubDomain>();
+				}
+				if (!subDomains.contains(pSubDomain)) {
+					subDomains.add(pSubDomain);
+					domain.setSubDomains(subDomains);
+					domainRepository.save(domain);
+				}
+			}
+		}	
+	}
+
 	
 	/**
 	 * Link sub domain.
@@ -153,48 +196,40 @@ public class SubscriptionTools {
 	 * @throws GenericDaoException the generic dao exception
 	 */
 	public DpDomain linkSubDomain(DpDomain pDomain, DpSubDomain pSubDomain) throws GenericDaoException {
-		if (pDomain == null) {
-			LOGGER.error("updateDomain: DOMAIN_BAD_REQUEST");
-			throw new GenericDaoException(Error.DOMAIN_BAD_REQUEST.getCode(), 
-					Error.DOMAIN_BAD_REQUEST.getLabel(), Error.DOMAIN_BAD_REQUEST.getValue());
-		} else if (pDomain.getId() == null) {
+		if (pDomain.getId() == null) {
 			LOGGER.error("updateDomain: DOMAIN_ID_MISSING");
 			throw new GenericDaoException(Error.DOMAIN_ID_MISSING.getCode(), 
 					Error.DOMAIN_ID_MISSING.getLabel(), Error.DOMAIN_ID_MISSING.getValue());
 		}
-		DpDomain domain = domainRepository.getOne(pDomain.getId().intValue());
-		if (domain != null) {
-			DpSubDomain subDomain = null;
-			if (pSubDomain.getId() != null) {
-				subDomain = subDomainRepository.getOne(pSubDomain.getId().intValue());
-			} 
-			if (subDomain == null) {
-				subDomain = createSubDomain(pSubDomain);
-			}
-			List<DpSubDomain> subDomains = domain.getSubDomains();
+		if (pDomain != null) {
+			List<DpSubDomain> subDomains = pDomain.getSubDomains();
 			if (subDomains == null) {
 				subDomains = new ArrayList<DpSubDomain>();
 			}
-			if (subDomain != null && !subDomains.contains(subDomain)) {
-				subDomains.add(subDomain);
-				domain.setSubDomains(subDomains);
-				domainRepository.save(domain);
+			if (pSubDomain != null && !subDomains.contains(pSubDomain)) {
+				subDomains.add(pSubDomain);
+				pDomain.setSubDomains(subDomains);
+				pDomain = domainRepository.save(pDomain);
 			}
-			// fetch the domain
-			return domain;
-		} else {
-			LOGGER.error("updateDomain: DOMAIN_NOT_FOUND");
-			throw new GenericDaoException(Error.DOMAIN_NOT_FOUND.getCode(), 
-					Error.DOMAIN_NOT_FOUND.getLabel(), Error.DOMAIN_NOT_FOUND.getValue());
-		}
+		} 	
+		return pDomain;
+		
 	}
 	
 	public DpDomain getDomain(int pId) throws GenericDaoException {
-		return domainRepository.getOne(pId);
+		Optional<DpDomain> domain = domainRepository.findById(pId);
+		if (domain != null && domain.isPresent()) {
+			return domain.get();
+		}
+		return null;
 	}
 	
 	public DpSubDomain getSubDomain(int pId) throws GenericDaoException {
-		return subDomainRepository.getOne(pId);
+		Optional<DpSubDomain> domain = subDomainRepository.findById(pId);
+		if (domain != null && domain.isPresent()) {
+			return domain.get();
+		}
+		return null;
 	}
 	
 

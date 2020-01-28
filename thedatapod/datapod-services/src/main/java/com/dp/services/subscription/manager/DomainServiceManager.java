@@ -132,9 +132,19 @@ public class DomainServiceManager {
 		GenericResponseVO subDomainResponse = new GenericResponseVO();
 		try {
 			if (pRequest != null && !DpUtils.isEmptyString(pRequest.getName())) {
+					if (pRequest.getDomainId() == null) {
+						String lMessage = resourceBundleHelperComponent.getMessage(Error.DOMAIN_ROOT_REQUIRED.getLabel(), null);
+						List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(Error.DOMAIN_ROOT_REQUIRED.getCode(), 
+								Error.DOMAIN_ROOT_REQUIRED.getLabel(), lMessage);
+						subDomainResponse = new GenericResponseVO(false, errorMsg);	
+						return subDomainResponse;
+					}
 					DpSubDomain subDomain = new DpSubDomain();
 					BeanUtils.copyProperties(pRequest, subDomain);
 					subDomain = subscriptionTools.createSubDomain(subDomain);
+					if (pRequest.getDomainId() != null) {
+						subscriptionTools.linkSubDomainToDomain(subDomain, pRequest.getDomainId());
+					}
 					subDomainResponse = new GenericResponseVO(true, subDomain);	
 					return subDomainResponse;			
 			} else {
@@ -167,34 +177,7 @@ public class DomainServiceManager {
 		}
 		GenericResponseVO subDomainResponse = new GenericResponseVO();
 		try {
-			if (pRequest != null && pRequest.getDomainId() > 0) {
-				DpDomain domain = subscriptionTools.getDomain((int)pRequest.getDomainId());
-				if (domain != null) {
-					DpSubDomain subDomain = subscriptionTools.getSubDomain((int)pRequest.getId());
-					if (subDomain != null) {
-						domain = subscriptionTools.linkSubDomain(domain, subDomain);
-						return new GenericResponseVO(true, domain);	
-					} else if(!DpUtils.isEmptyString(pRequest.getName())) {
-						subDomain = new DpSubDomain();
-						BeanUtils.copyProperties(pRequest, subDomain);
-						domain = subscriptionTools.linkSubDomain(domain, subDomain);
-						return new GenericResponseVO(true, domain);	
-					} else {
-						String lMessage = resourceBundleHelperComponent.getMessage(Error.DOMAIN_NOT_FOUND.getLabel(), null);
-						List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(Error.DOMAIN_NOT_FOUND.getCode(), 
-								Error.DOMAIN_NOT_FOUND.getLabel(), lMessage);
-						subDomainResponse = new GenericResponseVO(false, errorMsg);	
-						return subDomainResponse;
-					}
-
-				} else {
-					String lMessage = resourceBundleHelperComponent.getMessage(Error.DOMAIN_NOT_FOUND.getLabel(), null);
-					List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(Error.DOMAIN_NOT_FOUND.getCode(), 
-							Error.DOMAIN_NOT_FOUND.getLabel(), lMessage);
-					subDomainResponse = new GenericResponseVO(false, errorMsg);	
-					return subDomainResponse;
-				}				
-			} else if (pRequest != null && !DpUtils.isEmptyString(pRequest.getName())) {
+			if (pRequest != null && !DpUtils.isEmptyString(pRequest.getName())) {
 					DpSubDomain subDomain = new DpSubDomain();
 					BeanUtils.copyProperties(pRequest, subDomain);
 					subDomain = subscriptionTools.updateSubDomain(subDomain);
@@ -214,6 +197,80 @@ public class DomainServiceManager {
 					e.getErrLevel(), lMessage);
 			subDomainResponse = new GenericResponseVO(false, errorMsg);	
 			return subDomainResponse;
+		}
+	}
+	
+	
+	public GenericResponseVO getAllDomain() throws GenericException {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("getAllDomain");
+		}
+		GenericResponseVO domainResponse = new GenericResponseVO();
+		try {
+				
+				List<DpDomain> domains = subscriptionTools.getAllDomains();
+				domainResponse = new GenericResponseVO(true, domains);	
+				return domainResponse;			
+			
+
+		} catch (GenericDaoException e) {
+			String lMessage = resourceBundleHelperComponent.getMessage(e.getErrLevel(), null);
+			List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(e.getErrCode(), 
+					e.getErrLevel(), lMessage);
+			domainResponse = new GenericResponseVO(false, errorMsg);	
+			return domainResponse;
+		}
+	}
+	
+	public GenericResponseVO getDomainById(Integer pId) throws GenericException {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("getDomainById");
+		}
+		GenericResponseVO domainResponse = new GenericResponseVO();
+		try {				
+				DpDomain domain = subscriptionTools.getDomain(pId);
+				if (domain != null) {
+					domainResponse = new GenericResponseVO(true, domain);
+				} else {
+					String lMessage = resourceBundleHelperComponent.getMessage(Error.DOMAIN_NOT_FOUND.getLabel(), null);
+					List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(Error.DOMAIN_NOT_FOUND.getCode(), 
+							Error.DOMAIN_NOT_FOUND.getLabel(), lMessage);
+					domainResponse = new GenericResponseVO(false, errorMsg);	
+				}					
+				return domainResponse;			
+
+		} catch (GenericDaoException e) {
+			String lMessage = resourceBundleHelperComponent.getMessage(e.getErrLevel(), null);
+			List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(e.getErrCode(), 
+					e.getErrLevel(), lMessage);
+			domainResponse = new GenericResponseVO(false, errorMsg);	
+			return domainResponse;
+		}
+	}
+	
+	public GenericResponseVO getSubDomainById(Integer pId) throws GenericException {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("getSubDomainById");
+		}
+		GenericResponseVO domainResponse = new GenericResponseVO();
+		try {				
+				DpSubDomain domain = subscriptionTools.getSubDomain(pId);
+				if (domain != null) {
+					domainResponse = new GenericResponseVO(true, domain);
+				} else {
+					String lMessage = resourceBundleHelperComponent.getMessage(Error.DOMAIN_NOT_FOUND.getLabel(), null);
+					List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(Error.DOMAIN_NOT_FOUND.getCode(), 
+							Error.DOMAIN_NOT_FOUND.getLabel(), lMessage);
+					domainResponse = new GenericResponseVO(false, errorMsg);	
+				}					
+				return domainResponse;			
+
+		} catch (GenericDaoException e) {
+			String lMessage = resourceBundleHelperComponent.getMessage(e.getErrLevel(), null);
+			List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(e.getErrCode(), 
+					e.getErrLevel(), lMessage);
+			domainResponse = new GenericResponseVO(false, errorMsg);	
+			return domainResponse;
 		}
 	}
 	
