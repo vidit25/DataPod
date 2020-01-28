@@ -10,7 +10,7 @@
    </jsp:attribute>
    <jsp:body>
 	   <header class="align-center">
-	      <h2>Login Screen</h2>
+	      <h2>Login Screen for DataPod</h2>
 	   </header>
 	   	<form:form action="/login" method="POST" modelAttribute="signinForm">
 	   		<tr>
