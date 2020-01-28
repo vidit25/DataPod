@@ -1,0 +1,6 @@
+      <script src="${pageContext.request.contextPath}/assets/js/jquery.min.sj"></script>
+      <script src="${pageContext.request.contextPath}/assets/js/skel.min.sj"></script>
+      <script src="${pageContext.request.contextPath}/assets/js/util.sj"></script>
+      <script src="${pageContext.request.contextPath}/assets/js/main.sj"></script>
+
+      <jsp:invoke fragment="additionalJs"/>

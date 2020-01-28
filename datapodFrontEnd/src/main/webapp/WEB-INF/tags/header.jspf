@@ -1,0 +1,8 @@
+      <header id="header">
+         <div >
+            <a href="${pageContext.request.contextPath}/" class="logo"><strong>HEADER</strong> </a>
+            <nav id="nav">
+              
+            </nav>
+         </div>
+      </header>
