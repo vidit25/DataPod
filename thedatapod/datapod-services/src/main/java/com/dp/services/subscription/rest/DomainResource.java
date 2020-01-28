@@ -10,6 +10,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,7 +54,7 @@ public class DomainResource {
 	 * @param apiKey the api key
 	 * @return the generic response VO
 	 */
-	@PostMapping(value = "/api/create-domain")
+	@PostMapping(value = "/api/domain")
 	public @ResponseBody GenericResponseVO handleCreateDomin(@RequestBody DomainRequest pRequest,
 			@RequestHeader(name = "x-api-Key") String apiKey) {
 		GenericResponseVO domainResponse = new GenericResponseVO();
@@ -77,7 +78,7 @@ public class DomainResource {
 	 * @param apiKey the api key
 	 * @return the generic response VO
 	 */
-	@PostMapping(value = "/api/update-domain")
+	@PutMapping(value = "/api/domain")
 	public @ResponseBody GenericResponseVO handleUpdateDomain(@RequestBody DomainRequest pRequest,
 			@RequestHeader(name = "x-api-Key") String apiKey) {
 		GenericResponseVO domainResponse = new GenericResponseVO();
@@ -101,7 +102,7 @@ public class DomainResource {
 	 * @param apiKey the api key
 	 * @return the generic response VO
 	 */
-	@PostMapping(value = "/api/create-sub-domain")
+	@PostMapping(value = "/api/domain/sub-domain")
 	public @ResponseBody GenericResponseVO handleCreateSubDomin(@RequestBody SubDomainRequest pRequest,
 			@RequestHeader(name = "x-api-Key") String apiKey) {
 		GenericResponseVO domainResponse = new GenericResponseVO();
@@ -125,7 +126,7 @@ public class DomainResource {
 	 * @param apiKey the api key
 	 * @return the generic response VO
 	 */
-	@PostMapping(value = "/api/update-sub-domain")
+	@PutMapping(value = "/api/domain/sub-domain")
 	public @ResponseBody GenericResponseVO handleUpdateSubDomain(@RequestBody SubDomainRequest pRequest,
 			@RequestHeader(name = "x-api-Key") String apiKey) {
 		GenericResponseVO domainResponse = new GenericResponseVO();
@@ -166,7 +167,7 @@ public class DomainResource {
 		return domainResponse;
 	}*/
 	
-	@GetMapping(value = "/api/get-all-domain")
+	@GetMapping(value = "/api/domain")
 	public @ResponseBody GenericResponseVO handleGetAllDomain(@RequestHeader(name = "x-api-Key") String apiKey) {
 		GenericResponseVO domainResponse = new GenericResponseVO();
 		LOGGER.debug("DomainResource: handleGetAllDomain - request ");
@@ -182,7 +183,7 @@ public class DomainResource {
 		return domainResponse;
 	}
 	
-	@GetMapping(path = "/api/get-domain/{domainId}")
+	@GetMapping(path = "/api/domain/{domainId}")
 	public @ResponseBody GenericResponseVO handleGetDomainById(@RequestHeader(name = "x-api-Key") String apiKey,
 			@PathVariable String domainId) {
 		GenericResponseVO domainResponse = new GenericResponseVO();
@@ -207,14 +208,14 @@ public class DomainResource {
 		return domainResponse;
 	}
 	
-	@GetMapping(path = "/api/get-sub-domain/{domainId}")
+	@GetMapping(path = "/api/domain/sub-domain/{domainId}")
 	public @ResponseBody GenericResponseVO handleGetSubDomainById(@RequestHeader(name = "x-api-Key") String apiKey,
 			@PathVariable String domainId) {
 		GenericResponseVO domainResponse = new GenericResponseVO();
 		LOGGER.debug("DomainResource: handleGetSubDomainById - request ");
 		try {
 			if (!DpUtils.isEmptyString(domainId)) {
-				domainResponse = domainManager.getDomainById(Integer.valueOf(domainId));
+				domainResponse = domainManager.getSubDomainById(Integer.valueOf(domainId));
 			} else {
 				LOGGER.error("handleGetSubDomainById: DOMAIN_ID_MISSING");
 				String message = resourceBundleHelperComponent.getMessage(Error.DOMAIN_ID_MISSING.getLabel(), null);
