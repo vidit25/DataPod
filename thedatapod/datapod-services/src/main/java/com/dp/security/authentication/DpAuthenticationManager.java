@@ -137,19 +137,9 @@ public class DpAuthenticationManager extends AbstractUserDetailsAuthenticationPr
 	public boolean validatePassword(String username, String password, DpUser user) throws GenericDaoException {
 		String lEncryptedPassword = user.getPassword();
 		boolean lPasswordMatched = DpUtils.matchPassword(password, lEncryptedPassword);
-		if (!lPasswordMatched) {
-			int count = user.getFailureCount();
-			count = count + 1;
-			user.setFailureCount(count);
-			if (count > 3) {
-				user.setStatus("INACTIVE");
-			}
-			profileTools.updateUser(user);
+		if (!lPasswordMatched) {			
 			return Boolean.FALSE;
 		} else {
-			user.setLastLogin(Timestamp.valueOf(LocalDateTime.now()));
-			user.setFailureCount(0);
-			profileTools.updateUser(user);
 			return Boolean.TRUE;
 		}
 	}

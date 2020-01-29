@@ -483,6 +483,21 @@ public class SubscriptionTools {
 	}
 	
 	/**
+	 * Gets the user subscription.
+	 *
+	 * @param pId the id
+	 * @return the user subscription
+	 * @throws GenericDaoException the generic dao exception
+	 */
+	public DpUserSubscription getUserSubscription(Integer pId) throws GenericDaoException {
+		Optional<DpUserSubscription> userSubscription = userSubscriptionRepository.findById(pId);
+		if (userSubscription != null && userSubscription.isPresent()) {
+			return userSubscription.get();
+		}
+		return null;	
+	}
+	
+	/**
 	 * Gets the all subscrptions.
 	 *
 	 * @return the all subscrptions
@@ -492,6 +507,13 @@ public class SubscriptionTools {
 		List<DpUserSubscription> userSubscriptions = null;
 		userSubscriptions = userSubscriptionRepository.findAll();
 		return userSubscriptions;
+	}
+	
+	public DpUserSubscription saveUserSubscription(DpUserSubscription pUserSubscription) {
+		if (pUserSubscription != null) {
+			pUserSubscription = userSubscriptionRepository.save(pUserSubscription);
+		}
+		return pUserSubscription;
 	}
 	
 	

@@ -5,6 +5,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,76 +14,105 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * The Class LyUser.
  */
 @Entity
 @Table(name = "dp_user")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DpUser implements java.io.Serializable {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The user id. */
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private Integer userId;
 
 	/** The email address. */
+	@Column(name = "email")
 	private String emailAddress;
 
 	/** The first name. */
+	@Column(name = "first_name")
 	private String firstName;
 
 	/** The last name. */
+	@Column(name = "last_name")
 	private String lastName;
 
 	/** The user phone number. */
+	@Column(name = "phone")
 	private String phone;
 
 	/** The user password. */
+	@Column(name = "password")
 	private String password;
 
 	/** The user failed attempts at login. */
+	@Column(name = "failure_attempts")
 	private int failureCount;
 
 	/** The user last login time. */
+	@Column(name = "last_login")
 	private Timestamp lastLogin;
 
 	/** The user status. */
+	@Column(name = "status")
 	private String status;
 
 	/** The password reset flag. */
+	@Column(name = "reset_flag")
 	private Boolean resetFlag;
 
 	/** The account expired. */
+	@Column(name = "account_expired")
 	private boolean accountExpired;
 
 	/** The account locked. */
+	@Column(name = "account_locked")
 	private boolean accountLocked;
 
 	/** The credentials expired. */
+	@Column(name = "credentials_expired")
 	private boolean credentialsExpired;
 
 	/** The enabled. */
+	@Column(name = "enabled")
 	private boolean enabled;
 
 	/** The authorities. */
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+	@OrderBy
 	private List<DpAuthority> authorities;
 	
 	/** The user type. */
+	@Column(name = "type")
 	private String type;
 	
 	/** The user role. */
+	@Column(name = "role")
 	private String role;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "account_id", referencedColumnName = "account_id")
+	private DpAccount accountId;
 
 	/**
 	 * Checks if is account expired.
 	 *
 	 * @return true, if is account expired
 	 */
-	@Column(name = "account_expired")
+	
 	public boolean isAccountExpired() {
 		return accountExpired;
 	}
@@ -101,7 +131,7 @@ public class DpUser implements java.io.Serializable {
 	 *
 	 * @return true, if is account locked
 	 */
-	@Column(name = "account_locked")
+	
 	public boolean isAccountLocked() {
 		return accountLocked;
 	}
@@ -120,7 +150,6 @@ public class DpUser implements java.io.Serializable {
 	 *
 	 * @return true, if is credentials expired
 	 */
-	@Column(name = "credentials_expired")
 	public boolean isCredentialsExpired() {
 		return credentialsExpired;
 	}
@@ -139,7 +168,6 @@ public class DpUser implements java.io.Serializable {
 	 *
 	 * @return true, if is enabled
 	 */
-	@Column(name = "enabled")
 	public boolean isEnabled() {
 		return enabled;
 	}
@@ -158,9 +186,7 @@ public class DpUser implements java.io.Serializable {
 	 *
 	 * @return the authorities
 	 */
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
-	@OrderBy
+	
 	public List<DpAuthority> getAuthorities() {
 		return authorities;
 	}
@@ -179,7 +205,6 @@ public class DpUser implements java.io.Serializable {
 	 *
 	 * @return the failureCount
 	 */
-	@Column(name = "failure_attempts")
 	public int getFailureCount() {
 		return failureCount;
 	}
@@ -198,7 +223,6 @@ public class DpUser implements java.io.Serializable {
 	 *
 	 * @return the lastLogin
 	 */
-	@Column(name = "last_login")
 	public Timestamp getLastLogin() {
 		return lastLogin;
 	}
@@ -217,7 +241,6 @@ public class DpUser implements java.io.Serializable {
 	 *
 	 * @return the status
 	 */
-	@Column(name = "status")
 	public String getStatus() {
 		return status;
 	}
@@ -236,9 +259,7 @@ public class DpUser implements java.io.Serializable {
 	 *
 	 * @return the userId
 	 */
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
+	
 	public Integer getUserId() {
 		return userId;
 	}
@@ -257,7 +278,6 @@ public class DpUser implements java.io.Serializable {
 	 *
 	 * @return the emailAddress
 	 */
-	@Column(name = "email")
 	public String getEmailAddress() {
 		return emailAddress;
 	}
@@ -276,7 +296,6 @@ public class DpUser implements java.io.Serializable {
 	 *
 	 * @return the firstName
 	 */
-	@Column(name = "first_name")
 	public String getFirstName() {
 		return firstName;
 	}
@@ -295,7 +314,6 @@ public class DpUser implements java.io.Serializable {
 	 *
 	 * @return the lastName
 	 */
-	@Column(name = "last_name")
 	public String getLastName() {
 		return lastName;
 	}
@@ -314,7 +332,6 @@ public class DpUser implements java.io.Serializable {
 	 *
 	 * @return the phone
 	 */
-	@Column(name = "phone")
 	public String getPhone() {
 		return phone;
 	}
@@ -333,7 +350,6 @@ public class DpUser implements java.io.Serializable {
 	 *
 	 * @return the password
 	 */
-	@Column(name = "password")
 	public String getPassword() {
 		return password;
 	}
@@ -352,7 +368,6 @@ public class DpUser implements java.io.Serializable {
 	 *
 	 * @return the resetFlag
 	 */
-	@Column(name = "reset_flag")
 	public Boolean getResetFlag() {
 		return resetFlag;
 	}
@@ -369,7 +384,6 @@ public class DpUser implements java.io.Serializable {
 	/**
 	 * @return the type
 	 */
-	@Column(name = "type")
 	public String getType() {
 		return type;
 	}
@@ -384,7 +398,6 @@ public class DpUser implements java.io.Serializable {
 	/**
 	 * @return the role
 	 */
-	@Column(name = "role")
 	public String getRole() {
 		return role;
 	}
@@ -394,6 +407,14 @@ public class DpUser implements java.io.Serializable {
 	 */
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public DpAccount getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(DpAccount accountId) {
+		this.accountId = accountId;
 	}
 
 }

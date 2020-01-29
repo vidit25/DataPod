@@ -53,39 +53,3 @@ CREATE TABLE IF NOT EXISTS datapoddb.oauth_approvals (
   lastmodifiedat TIMESTAMP
 )ENGINE = InnoDB;
 
-CREATE TABLE datapoddb.authority (
-   id  INT NOT NULL,
-   name VARCHAR(255),
-   PRIMARY KEY (id)
-);
-
-ALTER TABLE datapoddb.authority ADD CONSTRAINT authority_name UNIQUE (NAME);
-
-CREATE TABLE IF NOT EXISTS datapoddb.dp_user (
-  id INT NOT NULL AUTO_INCREMENT,
-  email VARCHAR(250) NOT NULL,
-  first_name VARCHAR(250) NULL,
-  last_name VARCHAR(250) NULL,
-  phone VARCHAR(25) NULL,
-  password VARCHAR(250) NULL,
-  last_login DATETIME NULL,
-  account_expired BOOLEAN,
-  account_locked BOOLEAN,
-  credentials_expired BOOLEAN,
-  enabled BOOLEAN,
-  PRIMARY KEY (id),
-  UNIQUE INDEX id_UNIQUE (id ASC))
-ENGINE = InnoDB;
-
-ALTER TABLE  datapoddb.dp_user ADD CONSTRAINT user_name UNIQUE (email);
-
-
-CREATE TABLE datapoddb.user_authorities (
-   user_id INT NOT NULL,
-   authority_id INT NOT NULL,
-   PRIMARY KEY (user_id, authority_id)
-);
-
-ALTER TABLE  datapoddb.user_authorities ADD CONSTRAINT user_authorities_authority FOREIGN KEY (authority_id) REFERENCES datapoddb.authority (id);
-
-ALTER TABLE  datapoddb.user_authorities ADD CONSTRAINT user_authorities_user_ FOREIGN KEY (user_id) REFERENCES datapoddb.dp_user (id);

@@ -41,6 +41,23 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
 		}
 		return null;
 	}
+	
+	/**
+	 * Gets the user based on account number.
+	 *
+	 * @param pAccountName the account name
+	 * @return the user based on account number
+	 * @throws GenericDaoException the generic dao exception
+	 */
+	public DpUser getUserBasedOnAccountNumber(String pAccountName) throws GenericDaoException {
+		Query query = entityManager.createNativeQuery("SELECT * FROM dp_user " + "WHERE account_id = ?", DpUser.class);
+		query.setParameter(1, pAccountName);
+		List users = query.getResultList();
+		if (users != null && !users.isEmpty()) {
+			return (DpUser) users.get(0);
+		}
+		return null;
+	}
 
 	
 }

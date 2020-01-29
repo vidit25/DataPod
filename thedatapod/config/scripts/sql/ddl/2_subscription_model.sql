@@ -106,47 +106,67 @@ CREATE TABLE IF NOT EXISTS datapoddb.subscription_sub_domain_rel (
 
 
 CREATE TABLE IF NOT EXISTS datapoddb.account (
-  account_id VARCHAR(255),
-  organization_name VARCHAR(255),
+  account_id INT NOT NULL AUTO_INCREMENT,
+  organization_name VARCHAR(100),
   organization_description VARCHAR(255),
-  email VARCHAR(255),
-  phone VARCHAR(255),
-  user_name VARCHAR(255),
-  subscription_id VARCHAR(255),
-  calculated_cost VARCHAR(255),
-  status VARCHAR(255),
-  creation_date VARCHAR(255),
-  last_modified_date VARCHAR(255),
-  address VARCHAR(255),
+  phone VARCHAR(10),
+  subscription_id INT,
+  calculated_cost DOUBLE,
+  status VARCHAR(15),
+  creation_date DATETIME,
+  last_modified_date DATETIME,
+  address INT,
+  account_num VARCHAR(255),
   CONSTRAINT account_pk PRIMARY KEY(account_id),
-  CONSTRAINT subscription_id_fk FOREIGN KEY (subscription_id) REFERENCES datapoddb.subscription(subscription_id) ON DELETE CASCADE,
-  CONSTRAINT address_fk FOREIGN KEY (address_id) REFERENCES datapoddb.address(address_id) ON DELETE CASCADE
+  CONSTRAINT subscription_id_fk FOREIGN KEY (subscription_id) REFERENCES datapoddb.subscription_type(subscription_type_id) ON DELETE CASCADE,
+  CONSTRAINT user_address_fk FOREIGN KEY (address) REFERENCES datapoddb.address(address_id) ON DELETE CASCADE
 )ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS datapoddb.job_type (
-  job_type_id VARCHAR(255),
-  job_name VARCHAR(255),
+  job_type_id INT NOT NULL AUTO_INCREMENT,
+  job_name VARCHAR(100),
   job_description VARCHAR(255), 
   CONSTRAINT job_type_pk PRIMARY KEY(job_type_id)
 )ENGINE=InnoDB;
 
 
+CREATE TABLE datapoddb.authority (
+   id  INT NOT NULL,
+   name VARCHAR(255),
+   PRIMARY KEY (id)
+);
 
-CREATE TABLE IF NOT EXISTS datapoddb.user (
-  user_id VARCHAR(255),
-  user_name VARCHAR(255),
-  login VARCHAR(255),
-  password_hash VARCHAR(255),
-  phone VARCHAR(255),
-  email VARCHAR(255),
-  job_type_id VARCHAR(255),
-  account_id VARCHAR(255),
-  address_id VARCHAR(255),
-  status VARCHAR(255),
-  creation_date VARCHAR(255),
-  last_modified_date VARCHAR(255),  
-  CONSTRAINT user_pk PRIMARY KEY(user_id),
-  CONSTRAINT job_type_id_fk FOREIGN KEY (job_type_id) REFERENCES datapoddb.job_type(job_type_id) ON DELETE CASCADE,
-  CONSTRAINT address_fk FOREIGN KEY (address_id) REFERENCES datapoddb.address(address_id) ON DELETE CASCADE,
-  CONSTRAINT account_fk FOREIGN KEY (account_id) REFERENCES datapoddb.account(account_id) ON DELETE CASCADE
-)ENGINE=InnoDB;
+ALTER TABLE datapoddb.authority ADD CONSTRAINT authority_name UNIQUE (NAME);
+
+CREATE TABLE IF NOT EXISTS datapoddb.dp_user (
+  id INT NOT NULL AUTO_INCREMENT,
+  email VARCHAR(250) NOT NULL,
+  first_name VARCHAR(250) NULL,
+  last_name VARCHAR(250) NULL,
+  phone VARCHAR(25) NULL,
+  password VARCHAR(250) NOT NULL,
+  last_login DATETIME NULL,
+  account_expired BOOLEAN,
+  account_locked BOOLEAN,
+  credentials_expired BOOLEAN,
+  enabled BOOLEAN,
+  PRIMARY KEY (id),
+  UNIQUE INDEX id_UNIQUE (id ASC))
+ENGINE = InnoDB;
+
+ALTER TABLE  datapoddb.dp_user ADD CONSTRAINT user_name UNIQUE (email);
+
+
+CREATE TABLE datapoddb.user_authorities (
+   user_id INT NOT NULL,
+   authority_id INT NOT NULL,
+   PRIMARY KEY (user_id, authority_id)
+);
+
+ALTER TABLE  datapoddb.user_authorities ADD CONSTRAINT user_authorities_authority FOREIGN KEY (authority_id) REFERENCES datapoddb.authority (id);
+
+ALTER TABLE  datapoddb.user_authorities ADD CONSTRAINT user_authorities_user_ FOREIGN KEY (user_id) REFERENCES datapoddb.dp_user (id);
+
+ALTER TABLE  datapoddb.dp_user ADD COLUMN account_id INT ;
+ALTER TABLE  datapoddb.dp_user ADD CONSTRAINT dp_user_acc_id_fk FOREIGN KEY (account_id) REFERENCES datapoddb.account (account_id);
+

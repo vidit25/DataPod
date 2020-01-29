@@ -18,7 +18,12 @@ public enum Error {
 	ORGANIZATION_NAME(1010, "error.org.required", "Please provide organization name"),
 	USER_EMAIL(1011, "error.user.email.required", "Please provide mail"),
 	USER_SUBSCRIPTION_ALREADY_FOUND(1012, "error.user.subscription.already.found", "You have subscribed already. Please contact customer care."),
-	SUBSCRIPTIONS_NOT_FOUND(1013, "error.no.subscription", "Subscriptions not available.");
+	SUBSCRIPTIONS_NOT_FOUND(1013, "error.no.subscription", "Subscriptions not available."),
+	USER_NOT_FOUND(1014, "error.no.user.found", "User not found."),
+	USER_SUBSCRIPTION_TYPE_ID_REQUIRED(10015, "error.user.subscription.id.required", "User Subscription id is required"),
+	USER_SUBSCRIPTION_NOT_FOUND(10016, "error.user.subscription.not.found", "User Subscription not found"),
+	ACCOUNT_CREATION_ERROR(10017, "error.account.creation.error", "Account creation error"),
+	ACCOUNT_ALREADY_EXIST(10018, "error.account.already.exist", "Account already exist.");
 
 
 	

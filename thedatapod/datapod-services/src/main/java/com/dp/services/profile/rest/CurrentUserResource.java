@@ -1,8 +1,7 @@
 package com.dp.services.profile.rest;
 
-import java.io.IOException;
 import java.security.Principal;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -10,13 +9,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dp.db.model.DpUser;
 import com.dp.utils.DpUtils;
 import com.dp.utils.ResourceBundleHelper;
-import com.dp.services.exception.GenericDaoException;
-import com.dp.services.profile.tools.ProfileTools;
+import com.dp.services.constants.Error;
+import com.dp.services.exception.GenericException;
+import com.dp.services.profile.manager.ProfileServiceManager;
+import com.dp.services.profile.request.ActivateSubscriptionRequest;
+import com.dp.services.response.ErrorResponseVO;
+import com.dp.services.response.GenericResponseVO;
 
 /**
  * The Class CurrentUserResource.
@@ -31,41 +38,76 @@ public class CurrentUserResource {
 	@Autowired
 	private ResourceBundleHelper resourceBundleHelperComponent;
 
-	/** The ProfileTools. */
+	/** The profile service manager. */
 	@Autowired
-	private ProfileTools profileTools;
+	private ProfileServiceManager profileServiceManager;
 	
-		/** The environment. */
-		@Autowired
+	/** The environment. */
+	@Autowired
 	private Environment environment;
 
+	
+	
 	/**
-	 * Current user.
+	 * Handle current user.
 	 *
+	 * @param apiKey the api key
 	 * @param pPrincipal the principal
-	 * @return the map
+	 * @return the generic response VO
 	 */
-
-	@GetMapping("/api/user")
-	public Map<String, Object> currentUser(Principal pPrincipal) {
-		Map<String, Object> userMap = new HashMap<String, Object>();
+	@GetMapping(value = "/api/user")
+	public @ResponseBody GenericResponseVO handleCurrentUser(@RequestHeader(name = "x-api-Key") String apiKey,
+			Principal pPrincipal) {
+		GenericResponseVO userResponse = new GenericResponseVO();
+		LOGGER.debug("CurrentUserResource: handleCurrentUser - request ");
 		try {
 			if (pPrincipal != null) {
-				DpUser lUser = profileTools.getUserBasedOnUserName(pPrincipal.getName());
+				DpUser lUser = profileServiceManager.getUserBasedOnUserName(pPrincipal.getName());
 				if (lUser != null) {			
-					userMap = DpUtils.getPojoToMapObject(lUser);
-					userMap.remove("password");					
+					Map userMap = DpUtils.getPojoToMapObject(lUser);
+					userMap.remove("password");		
+					userResponse = new GenericResponseVO(true, userMap);
 				}
 			} else {
-				String lMessage = resourceBundleHelperComponent.getMessage("error.user.not.found", null);
-				userMap = DpUtils.generateErrorResponse(lMessage, null, "400");
+				String message = resourceBundleHelperComponent.getMessage(Error.USER_NOT_FOUND.getLabel(), null);
+				List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(Error.USER_NOT_FOUND.getCode(), 
+						Error.USER_NOT_FOUND.getLabel(), message);
+				userResponse = new GenericResponseVO(false, errorMsg);
 			}
-		} catch (IOException e) {
-			userMap = DpUtils.generateErrorResponse(e.getMessage(), null, "400");
-		} catch (GenericDaoException e) {
-			userMap = DpUtils.generateErrorResponse(e.getMessage(), null, "400");
+		}  catch(Exception e) {
+			List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(Error.SYSTEM_ERROR.getCode(),
+					Error.SYSTEM_ERROR.getLabel(), e.getMessage());
+			userResponse = new GenericResponseVO(false, errorMsg);
+			LOGGER.error(e.getMessage(), e);
 		}
-		return userMap;
+		LOGGER.debug("CurrentUserResource: handleCurrentUser - request handled");
+		return userResponse;
+	}
+	
+	
+	
+	/**
+	 * Handle activate subscription.
+	 *
+	 * @param pRequest the request
+	 * @param apiKey the api key
+	 * @return the generic response VO
+	 */
+	@PostMapping(value = "/api/user/activate-subscription")
+	public @ResponseBody GenericResponseVO handleActivateSubscription(@RequestBody ActivateSubscriptionRequest pRequest,
+			@RequestHeader(name = "x-api-Key") String apiKey) {
+		GenericResponseVO userResponse = new GenericResponseVO();
+		LOGGER.debug("CurrentUserResource: handleActivateSubscription - request ");
+		try {
+			userResponse = profileServiceManager.activateSubscription(pRequest);			
+		} catch (GenericException e) {
+			String lMessage = resourceBundleHelperComponent.getMessage(e.getErrLevel(), null);
+			List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(e.getErrCode(), 
+					e.getErrLevel(), lMessage);
+			userResponse = new GenericResponseVO(false, errorMsg);
+		} 
+		LOGGER.debug("CurrentUserResource: handleActivateSubscription - request handled");
+		return userResponse;
 	}
 
 }

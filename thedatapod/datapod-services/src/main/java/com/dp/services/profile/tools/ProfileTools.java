@@ -1,5 +1,7 @@
 package com.dp.services.profile.tools;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,11 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dp.db.model.DpAccount;
 import com.dp.db.model.DpAuthority;
 import com.dp.db.model.DpUser;
+import com.dp.db.model.DpUserSubscription;
+import com.dp.db.repository.AccountRepository;
 import com.dp.db.repository.AuthorityRepository;
 import com.dp.db.repository.UserRepository;
+import com.dp.services.constants.Account;
+import com.dp.services.constants.Error;
 import com.dp.services.exception.GenericDaoException;
+import com.dp.utils.DpUtils;
 
 /**
  * The Class ProfileTools.
@@ -28,64 +36,12 @@ public class ProfileTools {
 	/** The authority repository. */
 	@Autowired
 	private AuthorityRepository authorityRepository;
-
-	/**
-	 * Creates the user.
-	 *
-	 * @param pUser the user
-	 * @return the ly user
-	 * @throws GenericDaoException the generic dao exception
-	 */
-	public DpUser createUser(DpUser pUser) throws GenericDaoException {
-		try {
-			if (pUser == null) {
-				throw new GenericDaoException("User Information is missing");
-			}
-			DpUser lUser = userRepository.getUserBasedOnUserName(pUser.getEmailAddress());
-			if (lUser != null) {
-				throw new GenericDaoException("User Exists");
-			} else {				
-				pUser.setStatus("ACTIVE");
-				pUser.setFailureCount(0);
-				DpAuthority lAuthority = authorityRepository.getRoleBasedOnType("CUSTOMER");
-				if (lAuthority != null) {
-					List<DpAuthority> lAuthorities = new ArrayList<DpAuthority>();
-					lAuthorities.add(lAuthority);
-					pUser.setAuthorities(lAuthorities);
-				}
-				DpUser lUpdatedUser = userRepository.save(pUser);
-				// fetch the user
-				return lUpdatedUser;
-			}
-		} catch (GenericDaoException e) {
-			throw e;
-		}
-	}
-
 	
-	/**
-	 * Update user.
-	 *
-	 * @param pUser the user
-	 * @return the ly user
-	 * @throws GenericDaoException the generic dao exception
-	 */
-	public DpUser updateUser(DpUser pUser) throws GenericDaoException {
-		try {
-			if (pUser == null) {
-				throw new GenericDaoException("User Information is missing");
-			}
-			DpUser lUser = userRepository.getUserBasedOnUserName(pUser.getEmailAddress());
-			if (lUser == null) {
-				throw new GenericDaoException("User does not Exists");
-			} else {
-				userRepository.save(pUser);
-			}
-		} catch (GenericDaoException e) {
-			throw e;
-		}
-		return null;
-	}
+	/** The account repository. */
+	@Autowired
+	private AccountRepository accountRepository;
+
+
 
 	/**
 	 * Change password.
@@ -127,17 +83,7 @@ public class ProfileTools {
 		return user;
 	}
 
-	/**
-	 * Gets the user based on token.
-	 *
-	 * @return the user based on token
-	 * @throws GenericDaoException the generic dao exception
-	 */
-
-	public DpUser getUserBasedOnToken() throws GenericDaoException {
-		// TODO
-		return null;
-	}
+	
 
 	
 	/**
@@ -162,5 +108,78 @@ public class ProfileTools {
 		userRepository.save(lUser);
 
 	}
+	
+	/**
+	 * Creates the account.
+	 *
+	 * @param pUserSubscription the user subscription
+	 * @return the dp account
+	 * @throws GenericDaoException the generic dao exception
+	 */
+	public DpAccount createAccount(DpUserSubscription pUserSubscription) throws GenericDaoException {
+		DpAccount account = new DpAccount();
+		String accountNumber = String.valueOf(pUserSubscription.getEmail().hashCode());
+		accountNumber = accountNumber.replace("-", "");
+		DpAccount accountExist = accountRepository.getAccountBasedOnAccountNum(accountNumber);
+		if (accountExist != null) {
+			throw new GenericDaoException(Error.ACCOUNT_ALREADY_EXIST.getCode(), 
+					Error.ACCOUNT_ALREADY_EXIST.getLabel(), Error.ACCOUNT_ALREADY_EXIST.getValue());
+		}
+		account.setAccountNumber(accountNumber);
+		account.setAddress(pUserSubscription.getAddress());
+		if (pUserSubscription.getSubscriptionType() != null) {
+			account.setCost(pUserSubscription.getSubscriptionType().getCost());
+		}
+		account.setOrganizationDescription(pUserSubscription.getOrganizationDescription());
+		account.setOrganizationName(pUserSubscription.getOrganizationName());
+		account.setPhone(pUserSubscription.getPhone());
+		account.setSubscriptionId(pUserSubscription.getSubscriptionType());
+		account.setStatus(Account.DEACTIVE.getValue());
+		account.setCreationDate(Timestamp.valueOf(LocalDateTime.now()));
+		account.setLastModifiedDate(Timestamp.valueOf(LocalDateTime.now()));
+		account = accountRepository.save(account);
+		/*if (account != null) {
+			accountNumber = accountNumber + account.getAccountId();
+			account.setAccountNumber(accountNumber);
+			account = accountRepository.save(account);
+		}*/
+		return account;	
+	}
+	
+	public void activateAccount(DpAccount pAccount) throws GenericDaoException {
+		if (pAccount != null) {
+			pAccount.setStatus(Account.ACTIVE.getValue());
+			accountRepository.save(pAccount);
+		}
+	}
+	
+	/**
+	 * Creates the user.
+	 *
+	 * @param pUserSubscription the user subscription
+	 * @param pAccount the account
+	 * @return the dp user
+	 * @throws GenericDaoException the generic dao exception
+	 */
+	public DpUser createUser(DpUserSubscription pUserSubscription, DpAccount pAccount) throws GenericDaoException {
+		DpUser user = new DpUser();
+		user.setEmailAddress(pUserSubscription.getEmail());
+		user.setPhone(pUserSubscription.getPhone());
+		user.setFirstName(pUserSubscription.getOrganizationName());
+		user.setAccountId(pAccount);
+		user.setPassword(DpUtils.bCrypt(pAccount.getAccountNumber()));
+		DpAuthority authority = authorityRepository.getRoleBasedOnType("ADMIN");
+		if (authority != null) {
+			List<DpAuthority> authorities = new ArrayList<DpAuthority>();
+			authorities.add(authority);
+			user.setAuthorities(authorities);
+		}
+		userRepository.save(user);
+		return user;	
+	}
+	
+	
+	
+	
 
 }
