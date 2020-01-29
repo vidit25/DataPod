@@ -1,5 +1,7 @@
 package com.datapad.controllers;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +20,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.datapad.form.UserForm;
+import com.datapad.response.LoginResponse;
 import com.datapad.utils.DataPodConstant;
 
-@Controller
 public class LoginController implements DataPodConstant
 {
 	@Value("${service.client.id}")
@@ -71,8 +75,11 @@ public class LoginController implements DataPodConstant
 	   HttpEntity<MultiValueMap<String, String>> request = createHeaders(params);
 	   
 	   try {
-		   ResponseEntity<String> responseEntity= restTemplate.postForEntity(hostName+loginURI, request, String.class);
+		   ResponseEntity<LoginResponse> responseEntity= restTemplate.postForEntity(hostName+loginURI, request, LoginResponse.class);
 		   if (responseEntity != null && responseEntity.getBody() != null) {
+			   ServletRequestAttributes servletReqAttribs = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+			   HttpSession session= servletReqAttribs.getRequest().getSession(true);
+			   session.setAttribute("authToken", responseEntity.getBody().getAccessToken());
 			   LOGGER.info("Value of loginResponse..." + responseEntity.getBody());
 		   }
 	   } catch (HttpClientErrorException exception) {

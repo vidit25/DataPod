@@ -11,6 +11,7 @@
 	   <header class="align-center">
 	      <h2>DashBoard Screen</h2>
 	   </header>
+	   <a href="/domain">Domains</a>
 	   
     </jsp:body>
 </t:pageTemplate>
