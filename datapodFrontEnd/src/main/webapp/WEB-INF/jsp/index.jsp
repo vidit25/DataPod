@@ -33,7 +33,7 @@
 	   		</tr>
 	   		<br/>
 	   		<tr>
-	   			<form:button value="Login" />
+	   			<form:button value="Login" >Submit</form:button>
 	   		</tr>
 	   	
 	   </form:form>
