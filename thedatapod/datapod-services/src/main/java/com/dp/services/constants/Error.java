@@ -13,7 +13,12 @@ public enum Error {
 	SUBSCRIPTION_TYPE_NAME_REQUIRED(1005, "error.subscription.type.name.required", "Subscription name is required"),
 	SUBSCRIPTION_TYPE_COST_REQUIRED(1006, "error.subscription.type.cost.required", "Subscription base cost is required"),
 	SUBSCRIPTION_TYPE_ID_REQUIRED(1007, "error.subscription.type.id.required", "Subscription base id is required"),
-	SUBSCRIPTION_TYPE_NOT_FOUND(1008, "error.subscription.type.not.found", "Subscription type not found");
+	SUBSCRIPTION_TYPE_NOT_FOUND(1008, "error.subscription.type.not.found", "Subscription type not found"),
+	SUB_DOMAIN_ID_MISSING(1009, "error.sub.domain.id.required", "Please provide sub domain id"),
+	ORGANIZATION_NAME(1010, "error.org.required", "Please provide organization name"),
+	USER_EMAIL(1011, "error.user.email.required", "Please provide mail"),
+	USER_SUBSCRIPTION_ALREADY_FOUND(1012, "error.user.subscription.already.found", "You have subscribed already. Please contact customer care."),
+	SUBSCRIPTIONS_NOT_FOUND(1013, "error.no.subscription", "Subscriptions not available.");
 
 
 	

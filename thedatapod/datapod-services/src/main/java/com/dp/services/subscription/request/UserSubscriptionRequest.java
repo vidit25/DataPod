@@ -1,89 +1,54 @@
-package com.dp.db.model;
+package com.dp.services.subscription.request;
 
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
+
+
 
 
 
 /**
- * The Class DpSubscriptionType.
+ * The Class UserSubscriptionRequest.
  */
-@Entity
-@Table(name = "user_subscription")
-public class DpUserSubscription implements java.io.Serializable {
-
+public class UserSubscriptionRequest {
 	
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 879119753459362184L;
-
 	/** The id. */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "subscription_id")
 	private Integer id;
 
 	/** The organization name. */
-	@Column(name = "organization_name")
 	private String organizationName;
 	
 	/** The organization description. */
-	@Column(name = "organization_desc")
 	private String organizationDescription;
 	
 	/** The email. */
-	@Column(name = "email")
 	private String email;
 	
 	/** The phone. */
-	@Column(name = "phone")
 	private String phone;
 	
 	/** The status. */
-	@Column(name = "status")
 	private String status;
 	
 	/** The creation date. */
-	@Column(name = "creation_date")
 	private Timestamp creationDate;
 
 	/** The last modified date. */
-	@Column(name = "last_modified_date")
 	private Timestamp lastModifiedDate;
 	
-	/** The subscription type. */
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "subscription_type_id", referencedColumnName = "subscription_type_id")
-	private DpSubscriptionType subscriptionType;
+	/** The subscription type id. */
+	private Integer subscriptionTypeId;
 	
 	/** The address. */
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "address", referencedColumnName = "address_id")
-	private DpContactInfo address;
+	private AddressRequest address;
 	
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "subscription_sub_domain_rel", joinColumns = @JoinColumn(name = "subscription_id", referencedColumnName = "subscription_id"), inverseJoinColumns = @JoinColumn(name = "sub_domain_id", referencedColumnName = "sub_domain_id"))
-	@OrderBy
-	private List<DpSubDomain> subDomains;
+	/** The sub domain ids. */
+	private List<Integer> subDomainIds;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "domain_id", referencedColumnName = "domain_id")
-	private DpDomain domain;
+	/** The domain id. */
+	private Integer domainId;
 
-	
 	/**
 	 * Gets the id.
 	 *
@@ -229,21 +194,21 @@ public class DpUserSubscription implements java.io.Serializable {
 	}
 
 	/**
-	 * Gets the subscription type.
+	 * Gets the subscription type id.
 	 *
-	 * @return the subscription type
+	 * @return the subscription type id
 	 */
-	public DpSubscriptionType getSubscriptionType() {
-		return subscriptionType;
+	public Integer getSubscriptionTypeId() {
+		return subscriptionTypeId;
 	}
 
 	/**
-	 * Sets the subscription type.
+	 * Sets the subscription type id.
 	 *
-	 * @param subscriptionType the new subscription type
+	 * @param subscriptionTypeId the new subscription type id
 	 */
-	public void setSubscriptionType(DpSubscriptionType subscriptionType) {
-		this.subscriptionType = subscriptionType;
+	public void setSubscriptionTypeId(Integer subscriptionTypeId) {
+		this.subscriptionTypeId = subscriptionTypeId;
 	}
 
 	/**
@@ -251,7 +216,7 @@ public class DpUserSubscription implements java.io.Serializable {
 	 *
 	 * @return the address
 	 */
-	public DpContactInfo getAddress() {
+	public AddressRequest getAddress() {
 		return address;
 	}
 
@@ -260,25 +225,46 @@ public class DpUserSubscription implements java.io.Serializable {
 	 *
 	 * @param address the new address
 	 */
-	public void setAddress(DpContactInfo address) {
+	public void setAddress(AddressRequest address) {
 		this.address = address;
 	}
 
-	public List<DpSubDomain> getSubDomains() {
-		return subDomains;
+	/**
+	 * Gets the sub domain ids.
+	 *
+	 * @return the sub domain ids
+	 */
+	public List<Integer> getSubDomainIds() {
+		return subDomainIds;
 	}
 
-	public void setSubDomains(List<DpSubDomain> subDomains) {
-		this.subDomains = subDomains;
+	/**
+	 * Sets the sub domain ids.
+	 *
+	 * @param subDomainIds the new sub domain ids
+	 */
+	public void setSubDomainIds(List<Integer> subDomainIds) {
+		this.subDomainIds = subDomainIds;
 	}
 
-	public DpDomain getDomain() {
-		return domain;
+	/**
+	 * Gets the domain id.
+	 *
+	 * @return the domain id
+	 */
+	public Integer getDomainId() {
+		return domainId;
 	}
 
-	public void setDomain(DpDomain domain) {
-		this.domain = domain;
+	/**
+	 * Sets the domain id.
+	 *
+	 * @param domainId the new domain id
+	 */
+	public void setDomainId(Integer domainId) {
+		this.domainId = domainId;
 	}
+
 
 	
 	

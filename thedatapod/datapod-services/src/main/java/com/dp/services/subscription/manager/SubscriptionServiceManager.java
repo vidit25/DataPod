@@ -11,14 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import com.dp.db.model.DpDomain;
 import com.dp.db.model.DpSubscriptionType;
+import com.dp.db.model.DpUserSubscription;
 import com.dp.services.constants.Error;
 import com.dp.services.exception.GenericDaoException;
 import com.dp.services.exception.GenericException;
 import com.dp.services.response.ErrorResponseVO;
 import com.dp.services.response.GenericResponseVO;
 import com.dp.services.subscription.request.SubscriptionTypeRequest;
+import com.dp.services.subscription.request.UserSubscriptionRequest;
 import com.dp.services.subscription.tools.SubscriptionTools;
 import com.dp.utils.DpUtils;
 import com.dp.utils.ResourceBundleHelper;
@@ -119,6 +120,13 @@ public class SubscriptionServiceManager {
 		}
 	}
 	
+	/**
+	 * Gets the subscription type by id.
+	 *
+	 * @param pId the id
+	 * @return the subscription type by id
+	 * @throws GenericException the generic exception
+	 */
 	public GenericResponseVO getSubscriptionTypeById(Integer pId) throws GenericException {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("getSubscriptionTypeById");
@@ -145,6 +153,13 @@ public class SubscriptionServiceManager {
 		}
 	}
 	
+	/**
+	 * Gets the subscription type by domain id.
+	 *
+	 * @param pDomainId the domain id
+	 * @return the subscription type by domain id
+	 * @throws GenericException the generic exception
+	 */
 	public GenericResponseVO getSubscriptionTypeByDomainId(Integer pDomainId) throws GenericException {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("getSubscriptionTypeById");
@@ -170,5 +185,60 @@ public class SubscriptionServiceManager {
 			return subscriptionTypeByDomainId;
 		}
 	}
+	
+	/**
+	 * Creates the subscription type.
+	 *
+	 * @param pRequest the request
+	 * @return the generic response VO
+	 * @throws GenericException the generic exception
+	 */
+	public GenericResponseVO createUserSubscription(UserSubscriptionRequest pRequest) throws GenericException {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("createUserSubscription");
+		}
+		GenericResponseVO subTypeResponse = new GenericResponseVO();
+		try {
+			if (pRequest.getSubDomainIds() == null || pRequest.getSubDomainIds().isEmpty()) {
+				String lMessage = resourceBundleHelperComponent.getMessage(Error.SUB_DOMAIN_ID_MISSING.getLabel(), null);
+				List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(Error.SUB_DOMAIN_ID_MISSING.getCode(), 
+						Error.SUB_DOMAIN_ID_MISSING.getLabel(), lMessage);
+				subTypeResponse = new GenericResponseVO(false, errorMsg);	
+				return subTypeResponse;
+			}
+			
+			if (pRequest.getDomainId() == null) {
+				String lMessage = resourceBundleHelperComponent.getMessage(Error.DOMAIN_ROOT_REQUIRED.getLabel(), null);
+				List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(Error.DOMAIN_ROOT_REQUIRED.getCode(), 
+						Error.DOMAIN_ROOT_REQUIRED.getLabel(), lMessage);
+				subTypeResponse = new GenericResponseVO(false, errorMsg);	
+				return subTypeResponse;
+			}			
+		    DpUserSubscription userSubscription = new DpUserSubscription();			
+			BeanUtils.copyProperties(pRequest, userSubscription);
+			userSubscription = subscriptionTools.subscribeUser(userSubscription, pRequest);
+			subTypeResponse = new GenericResponseVO(true, userSubscription);	
+			return subTypeResponse;			
+
+		} catch (GenericDaoException e) {
+			String lMessage = resourceBundleHelperComponent.getMessage(e.getErrLevel(), null);
+			List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(e.getErrCode(), 
+					e.getErrLevel(), lMessage);
+			subTypeResponse = new GenericResponseVO(false, errorMsg);	
+			return subTypeResponse;
+		}
+	}
+	
+	/**
+	 * Gets the all subscriptions.
+	 *
+	 * @return the all domains
+	 * @throws GenericDaoException the generic dao exception
+	 */
+	public List<DpUserSubscription> getAllSubscriptions() throws GenericDaoException {
+		List<DpUserSubscription> userSubscriptions = subscriptionTools.getAllSubscrptions();
+		return userSubscriptions;
+	}
+	
 	
 }

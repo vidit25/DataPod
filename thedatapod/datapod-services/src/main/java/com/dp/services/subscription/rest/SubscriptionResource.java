@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dp.db.model.DpUserSubscription;
 import com.dp.services.constants.Error;
 import com.dp.services.exception.GenericException;
 import com.dp.services.response.ErrorResponseVO;
 import com.dp.services.response.GenericResponseVO;
 import com.dp.services.subscription.manager.SubscriptionServiceManager;
 import com.dp.services.subscription.request.SubscriptionTypeRequest;
+import com.dp.services.subscription.request.UserSubscriptionRequest;
 import com.dp.utils.DpUtils;
 import com.dp.utils.ResourceBundleHelper;
 
@@ -165,6 +167,63 @@ public class SubscriptionResource {
 		LOGGER.debug("SubscriptionResource: handleGetSubscriptionType - request handled");
 		return subscriptionTypeResponse;
 	}
+	
+	/**
+	 * Handle user subscription.
+	 *
+	 * @param pRequest the request
+	 * @param apiKey the api key
+	 * @return the generic response VO
+	 */
+	@PostMapping(value = "/api/subscribe")
+	public @ResponseBody GenericResponseVO handleUserSubscription(@RequestBody UserSubscriptionRequest pRequest,
+			@RequestHeader(name = "x-api-Key") String apiKey) {
+		GenericResponseVO subscriptionTypeResponse = new GenericResponseVO();
+		LOGGER.debug("SubscriptionResource: handleUserSubscription - request ");
+		try {
+			subscriptionTypeResponse = subscriptionManager.createUserSubscription(pRequest);			
+		} catch (GenericException e) {
+			String lMessage = resourceBundleHelperComponent.getMessage(e.getErrLevel(), null);
+			List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(e.getErrCode(), 
+					e.getErrLevel(), lMessage);
+			subscriptionTypeResponse = new GenericResponseVO(false, errorMsg);
+		} 
+		LOGGER.debug("SubscriptionResource: handleUserSubscription - request handled");
+		return subscriptionTypeResponse;
+	}
+	
+	
+	
+	/**
+	 * Handle get all subscriptions.
+	 *
+	 * @param apiKey the api key
+	 * @return the generic response VO
+	 */
+	@GetMapping(value = "/api/all-subscriptions")
+	public @ResponseBody GenericResponseVO handleGetAllSubscriptions(@RequestHeader(name = "x-api-Key") String apiKey) {
+		GenericResponseVO subscriptionTypeResponse = new GenericResponseVO();
+		LOGGER.debug("SubscriptionResource: handleGetAllSubscriptions - request ");
+		try {
+			List<DpUserSubscription> subscriptions = subscriptionManager.getAllSubscriptions();
+			if (subscriptions != null && !subscriptions.isEmpty()) {
+				subscriptionTypeResponse =  new GenericResponseVO(true, subscriptions);
+			} else {
+				String lMessage = resourceBundleHelperComponent.getMessage(Error.SUBSCRIPTIONS_NOT_FOUND.getLabel(), null);
+				List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(Error.SUBSCRIPTIONS_NOT_FOUND.getCode(),
+						Error.SUBSCRIPTIONS_NOT_FOUND.getLabel(), lMessage);
+				subscriptionTypeResponse = new GenericResponseVO(false, errorMsg);
+			}
+		} catch(Exception e) {
+			List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(Error.SYSTEM_ERROR.getCode(),
+					Error.SYSTEM_ERROR.getLabel(), e.getMessage());
+			subscriptionTypeResponse = new GenericResponseVO(false, errorMsg);
+			LOGGER.error(e.getMessage(), e);
+		}
+		LOGGER.debug("SubscriptionResource: handleGetSubscriptionType - request handled");
+		return subscriptionTypeResponse;
+	}
+	
 
 
 }

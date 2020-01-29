@@ -86,18 +86,22 @@ CREATE TABLE IF NOT EXISTS datapoddb.user_subscription (
   creation_date DATETIME,
   last_modified_date DATETIME,
   address INT,
+  domain_id INT,
   CONSTRAINT subscription_pk PRIMARY KEY(subscription_id),
   CONSTRAINT subscription_type_id_fk FOREIGN KEY (subscription_type_id) REFERENCES datapoddb.subscription_type(subscription_type_id) ON DELETE CASCADE,
-  CONSTRAINT address_fk FOREIGN KEY (address) REFERENCES datapoddb.address(address_id) ON DELETE CASCADE
+  CONSTRAINT address_fk FOREIGN KEY (address) REFERENCES datapoddb.address(address_id) ON DELETE CASCADE,
+  CONSTRAINT sub_domain_id_fk FOREIGN KEY (domain_id) REFERENCES datapoddb.domains(domain_id) ON DELETE CASCADE
 )ENGINE=InnoDB;
+
 
 CREATE TABLE IF NOT EXISTS datapoddb.subscription_sub_domain_rel (
   subscription_id INT NOT NULL,
   sub_domain_id  INT NOT NULL,  
   CONSTRAINT subscription_sub_domain_pk PRIMARY KEY(subscription_id,sub_domain_id),
   CONSTRAINT subscription_id FOREIGN KEY (subscription_id) REFERENCES datapoddb.user_subscription(subscription_id) ON DELETE CASCADE,
-  CONSTRAINT sub_domain_id_fk FOREIGN KEY (sub_domain_id) REFERENCES datapoddb.sub_domains(sub_domain_id) ON DELETE CASCADE
+  CONSTRAINT sub_scr_domain_id_fk FOREIGN KEY (sub_domain_id) REFERENCES datapoddb.sub_domains(sub_domain_id) ON DELETE CASCADE
 )ENGINE=InnoDB;
+
 
 
 

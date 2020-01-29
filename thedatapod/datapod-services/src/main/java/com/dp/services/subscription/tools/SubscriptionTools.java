@@ -11,20 +11,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dp.db.model.DpContactInfo;
 import com.dp.db.model.DpDomain;
 import com.dp.db.model.DpSubDomain;
 import com.dp.db.model.DpSubscriptionFeature;
 import com.dp.db.model.DpSubscriptionType;
+import com.dp.db.model.DpUserSubscription;
+import com.dp.db.repository.AddressRepository;
 import com.dp.db.repository.DomainRepository;
 import com.dp.db.repository.SubDomainRepository;
 import com.dp.db.repository.SubscriptionFeatureRepository;
 import com.dp.db.repository.SubscriptionTypeRepository;
+import com.dp.db.repository.UserSubscriptionRepository;
 import com.dp.services.exception.GenericDaoException;
 import com.dp.services.subscription.request.FeatureRequest;
 import com.dp.services.subscription.request.SubscriptionTypeRequest;
+import com.dp.services.subscription.request.UserSubscriptionRequest;
 import com.dp.services.constants.Domain;
 import com.dp.services.constants.Error;
 import com.dp.services.constants.SubscriptionType;
+import com.dp.services.constants.UserSubscriptionType;
 import com.dp.utils.DpUtils;
 import com.dp.utils.ResourceBundleHelper;
 
@@ -63,6 +69,14 @@ public class SubscriptionTools {
 	/** The subscription feature repository. */
 	@Autowired
 	private SubscriptionFeatureRepository subscriptionFeatureRepository;
+	
+	/** The address repository. */
+	@Autowired
+	private AddressRepository addressRepository;
+	
+	/** The user subscription repository. */
+	@Autowired
+	private UserSubscriptionRepository userSubscriptionRepository;
 
 	
 	
@@ -376,11 +390,110 @@ public class SubscriptionTools {
 	
 	}
 	
+	/**
+	 * Gets the subscription type based on domain.
+	 *
+	 * @param pId the id
+	 * @return the subscription type based on domain
+	 * @throws GenericDaoException the generic dao exception
+	 */
 	public List<DpSubscriptionType> getSubscriptionTypeBasedOnDomain(Integer pId) throws GenericDaoException {
 		List<DpSubscriptionType> subscriptionTypes = null;
 		subscriptionTypes = subscriptionTypeRepository.getSubscriptionTypeBasedOnDomain(pId);
 		return subscriptionTypes;
 	}
+	
+	
+	/**
+	 * Subscribe user.
+	 *
+	 * @param pUserSubscription the user subscription
+	 * @param pRequest the request
+	 * @return the dp user subscription
+	 * @throws GenericDaoException the generic dao exception
+	 */
+	public DpUserSubscription subscribeUser(DpUserSubscription pUserSubscription, UserSubscriptionRequest pRequest) throws GenericDaoException {
+		if (pUserSubscription == null) {
+			throw new GenericDaoException(Error.DOMAIN_BAD_REQUEST.getCode(), 
+					Error.DOMAIN_BAD_REQUEST.getLabel(), Error.DOMAIN_BAD_REQUEST.getValue());
+		} else if (DpUtils.isEmptyString(pUserSubscription.getOrganizationName())) {
+			throw new GenericDaoException(Error.ORGANIZATION_NAME.getCode(), 
+					Error.ORGANIZATION_NAME.getLabel(), Error.ORGANIZATION_NAME.getValue());
+		} else if (pUserSubscription.getEmail() == null) {
+			throw new GenericDaoException(Error.USER_EMAIL.getCode(), 
+					Error.USER_EMAIL.getLabel(), Error.USER_EMAIL.getValue());
+		} else if (pRequest.getSubscriptionTypeId() == null) {
+			throw new GenericDaoException(Error.SUBSCRIPTION_TYPE_ID_REQUIRED.getCode(), 
+					Error.SUBSCRIPTION_TYPE_ID_REQUIRED.getLabel(), Error.SUBSCRIPTION_TYPE_ID_REQUIRED.getValue());
+		}
+		String email = pUserSubscription.getEmail();
+		DpUserSubscription subscription = getUserSubscriptionBasedOnEmail(email);
+		if (subscription != null) {
+			throw new GenericDaoException(Error.USER_SUBSCRIPTION_ALREADY_FOUND.getCode(), 
+					Error.USER_SUBSCRIPTION_ALREADY_FOUND.getLabel(), Error.USER_SUBSCRIPTION_ALREADY_FOUND.getValue());
+		}
+		DpDomain domain = getDomain(pRequest.getDomainId());
+		if (domain != null) {
+			DpSubscriptionType subscriptionType = getSubscriptionType(pRequest.getSubscriptionTypeId());
+			if (subscriptionType != null) {
+				pUserSubscription.setSubscriptionType(subscriptionType);
+			} else {
+				throw new GenericDaoException(Error.SUBSCRIPTION_TYPE_NOT_FOUND.getCode(), 
+						Error.SUBSCRIPTION_TYPE_NOT_FOUND.getLabel(), Error.SUBSCRIPTION_TYPE_NOT_FOUND.getValue());
+			
+			}
+			pUserSubscription.setStatus(UserSubscriptionType.INITIATED.getValue());
+			if (pRequest.getSubDomainIds() != null && !pRequest.getSubDomainIds().isEmpty()) {
+				List<DpSubDomain> subDomains = new ArrayList<DpSubDomain>();
+				for (Integer subDomainId : pRequest.getSubDomainIds()) {
+					DpSubDomain subDomain = getSubDomain(subDomainId);
+					subDomains.add(subDomain);
+				}	
+				pUserSubscription.setSubDomains(subDomains);
+			}
+			pUserSubscription.setDomain(domain);
+			if (pRequest.getAddress() != null && !DpUtils.
+					isEmptyString(pRequest.getAddress().getAddressLineOne())) {
+				DpContactInfo address = new DpContactInfo();
+				BeanUtils.copyProperties(pRequest.getAddress(), address);
+				address = addressRepository.save(address);
+				pUserSubscription.setAddress(address);
+			}
+			pUserSubscription.setCreationDate(Timestamp.valueOf(LocalDateTime.now()));
+			pUserSubscription.setLastModifiedDate(Timestamp.valueOf(LocalDateTime.now()));			
+			DpUserSubscription updatedUserSubscription = userSubscriptionRepository.save(pUserSubscription);
+			return updatedUserSubscription;
+		} else {
+			throw new GenericDaoException(Error.DOMAIN_NOT_FOUND.getCode(), 
+					Error.DOMAIN_NOT_FOUND.getLabel(), Error.DOMAIN_NOT_FOUND.getValue());
+		}
+		
+	
+	}
+
+	/**
+	 * Gets the user subscription based on email.
+	 *
+	 * @param pEmail the email
+	 * @return the user subscription based on email
+	 * @throws GenericDaoException the generic dao exception
+	 */
+	public DpUserSubscription getUserSubscriptionBasedOnEmail(String pEmail) throws GenericDaoException {
+		return userSubscriptionRepository.getUserSubscriptionBasedOnEmail(pEmail);		
+	}
+	
+	/**
+	 * Gets the all subscrptions.
+	 *
+	 * @return the all subscrptions
+	 * @throws GenericDaoException the generic dao exception
+	 */
+	public List<DpUserSubscription> getAllSubscrptions() throws GenericDaoException {
+		List<DpUserSubscription> userSubscriptions = null;
+		userSubscriptions = userSubscriptionRepository.findAll();
+		return userSubscriptions;
+	}
+	
 	
 
 
