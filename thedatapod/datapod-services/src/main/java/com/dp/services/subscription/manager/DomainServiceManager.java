@@ -201,6 +201,12 @@ public class DomainServiceManager {
 	}
 	
 	
+	/**
+	 * Gets the all domain.
+	 *
+	 * @return the all domain
+	 * @throws GenericException the generic exception
+	 */
 	public GenericResponseVO getAllDomain() throws GenericException {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("getAllDomain");
@@ -222,6 +228,13 @@ public class DomainServiceManager {
 		}
 	}
 	
+	/**
+	 * Gets the domain by id.
+	 *
+	 * @param pId the id
+	 * @return the domain by id
+	 * @throws GenericException the generic exception
+	 */
 	public GenericResponseVO getDomainById(Integer pId) throws GenericException {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("getDomainById");
@@ -248,6 +261,13 @@ public class DomainServiceManager {
 		}
 	}
 	
+	/**
+	 * Gets the sub domain by id.
+	 *
+	 * @param pId the id
+	 * @return the sub domain by id
+	 * @throws GenericException the generic exception
+	 */
 	public GenericResponseVO getSubDomainById(Integer pId) throws GenericException {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("getSubDomainById");

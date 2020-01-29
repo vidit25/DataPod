@@ -14,10 +14,20 @@ public class ErrorResponseVO {
 	/** The errorMessage. */
 	private String errorMessage;
 	
+	/**
+	 * Instantiates a new error response VO.
+	 */
 	public ErrorResponseVO() {
 		
 	}
 	
+	/**
+	 * Instantiates a new error response VO.
+	 *
+	 * @param errorCode the error code
+	 * @param errorLabel the error label
+	 * @param errorMessage the error message
+	 */
 	public ErrorResponseVO(int errorCode, String errorLabel, String errorMessage) {
 		this.errorCode = errorCode;
 		this.errorLabel = errorLabel;

@@ -1,12 +1,14 @@
 package com.dp.services.constants;
 
 /**
- * The Enum Domain.
+ * The Enum UserSubscriptionType.
  */
-public enum Domain {
+public enum UserSubscriptionType {
 	
-	ACTIVE(1, "ACTIVE"), 
-	DEACTIVE(2, "DEACTIVE"); 
+	INITIATED(100, "INITIATED"),
+	ACTIVE(101, "ACTIVE"),
+	SUSPENDED(102, "SUSPENDED"),
+	DEACTIVE(103, "DEACTIVE"); 
 
 
     /** The code. */
@@ -16,12 +18,12 @@ public enum Domain {
     private final String value;
 
     /**
-     * Instantiates a new domain.
+     * Instantiates a new subscription type.
      *
      * @param code the code
      * @param value the value
      */
-    Domain(int code, String value) {
+    UserSubscriptionType(int code, String value) {
         this.code = code;
         this.value = value;
     }

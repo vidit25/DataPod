@@ -24,6 +24,7 @@ public class DomainRequest {
 	/** The status. */
 	private String status;
 	
+	/** The sub domain ids. */
 	private List<Integer> subDomainIds;
 
 	/**
@@ -98,10 +99,20 @@ public class DomainRequest {
 		this.status = status;
 	}
 
+	/**
+	 * Gets the sub domain ids.
+	 *
+	 * @return the sub domain ids
+	 */
 	public List<Integer> getSubDomainIds() {
 		return subDomainIds;
 	}
 
+	/**
+	 * Sets the sub domain ids.
+	 *
+	 * @param subDomainIds the new sub domain ids
+	 */
 	public void setSubDomainIds(List<Integer> subDomainIds) {
 		this.subDomainIds = subDomainIds;
 	}

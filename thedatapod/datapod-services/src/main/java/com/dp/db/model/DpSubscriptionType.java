@@ -1,15 +1,20 @@
 package com.dp.db.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 
@@ -21,9 +26,7 @@ import javax.persistence.Table;
 @Table(name = "subscription_type")
 public class DpSubscriptionType implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 795429387315508532L;
 
 	/** The id. */
@@ -41,59 +44,67 @@ public class DpSubscriptionType implements java.io.Serializable {
 	private String description;
 	
 	
-	/** The sub domains. */
+	/** The  domains. */
+	@OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "domain_id", nullable = false, referencedColumnName = "domain_id")
 	private DpDomain domainId;
 	
 	/** The cost. */
+	@Column(name = "cost")
 	private Double cost;
 	
 	/** The data min usage. */
-	private Integer dataMinUsage;
+	@Column(name = "data_min_usage")
+	private String dataMinUsage;
 	
 	/** The data max usage. */
-	private Integer dataMaxUsage;
+	@Column(name = "data_max_usage")
+	private String dataMaxUsage;
 
 	/** The time min usage. */
-	private Integer timeMinUsage;
+	@Column(name = "time_min_usage")
+	private String timeMinUsage;
 
 	/** The time max usage. */
-	private Integer timeMaxUsage;	
+	@Column(name = "time_max_usage")
+	private String timeMaxUsage;	
 	
 	/** The status. */
+	@Column(name = "status")
 	private String status;
 	
 	/** The creation date. */
+	@Column(name = "creation_date")
 	private Timestamp creationDate;
 
 	/** The last modified date. */
+	@Column(name = "last_modified_date")
 	private Timestamp lastModifiedDate;
+	
+	/** The features. */
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "subscription_feature_rel", joinColumns = @JoinColumn(name = "subscription_type_id", referencedColumnName = "subscription_type_id"), inverseJoinColumns = @JoinColumn(name = "feature_id", referencedColumnName = "feature_id"))
+	@OrderBy
+	private List<DpSubscriptionFeature> features;
 
 	/**
 	 * Gets the domain id.
 	 *
 	 * @return the domain id
 	 */
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "domain_id", referencedColumnName = "domain_id")
+	
 	public DpDomain getDomainId() {
 		return domainId;
 	}
 
-	/**
-	 * Sets the domain id.
-	 *
-	 * @param domain_id the new domain id
-	 */
-	public void setDomain_id(DpDomain domainId) {
-		this.domainId = domainId;
-	}
+	
 
 	/**
 	 * Gets the cost.
 	 *
 	 * @return the cost
 	 */
-	@Column(name = "cost")
+	
 	public Double getCost() {
 		return cost;
 	}
@@ -112,8 +123,7 @@ public class DpSubscriptionType implements java.io.Serializable {
 	 *
 	 * @return the data min usage
 	 */
-	@Column(name = "data_min_usage")
-	public Integer getDataMinUsage() {
+	public String getDataMinUsage() {
 		return dataMinUsage;
 	}
 
@@ -122,7 +132,7 @@ public class DpSubscriptionType implements java.io.Serializable {
 	 *
 	 * @param dataMinUsage the new data min usage
 	 */
-	public void setDataMinUsage(Integer dataMinUsage) {
+	public void setDataMinUsage(String dataMinUsage) {
 		this.dataMinUsage = dataMinUsage;
 	}
 
@@ -131,8 +141,7 @@ public class DpSubscriptionType implements java.io.Serializable {
 	 *
 	 * @return the data max usage
 	 */
-	@Column(name = "data_max_usage")
-	public Integer getDataMaxUsage() {
+	public String getDataMaxUsage() {
 		return dataMaxUsage;
 	}
 
@@ -141,7 +150,7 @@ public class DpSubscriptionType implements java.io.Serializable {
 	 *
 	 * @param dataMaxUsage the new data max usage
 	 */
-	public void setData_max_usage(Integer dataMaxUsage) {
+	public void setDataMaxUsage(String dataMaxUsage) {
 		this.dataMaxUsage = dataMaxUsage;
 	}
 
@@ -150,8 +159,7 @@ public class DpSubscriptionType implements java.io.Serializable {
 	 *
 	 * @return the time min usage
 	 */
-	@Column(name = "time_min_usage")
-	public Integer getTimeMinUsage() {
+	public String getTimeMinUsage() {
 		return timeMinUsage;
 	}
 
@@ -160,7 +168,7 @@ public class DpSubscriptionType implements java.io.Serializable {
 	 *
 	 * @param timeMinUsage the new time min usage
 	 */
-	public void setTime_min_usage(Integer timeMinUsage) {
+	public void setTimeMinUsage(String timeMinUsage) {
 		this.timeMinUsage = timeMinUsage;
 	}
 
@@ -169,8 +177,7 @@ public class DpSubscriptionType implements java.io.Serializable {
 	 *
 	 * @return the time max usage
 	 */
-	@Column(name = "time_max_usage")
-	public Integer getTimeMaxUsage() {
+	public String getTimeMaxUsage() {
 		return timeMaxUsage;
 	}
 
@@ -179,7 +186,7 @@ public class DpSubscriptionType implements java.io.Serializable {
 	 *
 	 * @param timeMaxUsage the new time max usage
 	 */
-	public void setTime_max_usage(Integer timeMaxUsage) {
+	public void setTimeMaxUsage(String timeMaxUsage) {
 		this.timeMaxUsage = timeMaxUsage;
 	}
 
@@ -188,7 +195,6 @@ public class DpSubscriptionType implements java.io.Serializable {
 	 *
 	 * @return the status
 	 */
-	@Column(name = "status")
 	public String getStatus() {
 		return status;
 	}
@@ -207,7 +213,6 @@ public class DpSubscriptionType implements java.io.Serializable {
 	 *
 	 * @return the creation date
 	 */
-	@Column(name = "creation_date")
 	public Timestamp getCreationDate() {
 		return creationDate;
 	}
@@ -215,9 +220,9 @@ public class DpSubscriptionType implements java.io.Serializable {
 	/**
 	 * Sets the creation date.
 	 *
-	 * @param creation_date the new creation date
+	 * @param creationDate the new creation date
 	 */
-	public void setCreation_date(Timestamp creationDate) {
+	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
 	}
 
@@ -226,7 +231,7 @@ public class DpSubscriptionType implements java.io.Serializable {
 	 *
 	 * @return the last modified date
 	 */
-	@Column(name = "last_modified_date")
+	
 	public Timestamp getLastModifiedDate() {
 		return lastModifiedDate;
 	}
@@ -234,9 +239,9 @@ public class DpSubscriptionType implements java.io.Serializable {
 	/**
 	 * Sets the last modified date.
 	 *
-	 * @param last_modified_date the new last modified date
+	 * @param lastModifiedDate the new last modified date
 	 */
-	public void setLast_modified_date(Timestamp lastModifiedDate) {
+	public void setLastModifiedDate(Timestamp lastModifiedDate) {
 		this.lastModifiedDate = lastModifiedDate;
 	}
 
@@ -293,6 +298,34 @@ public class DpSubscriptionType implements java.io.Serializable {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * Gets the features.
+	 *
+	 * @return the features
+	 */
+	
+	public List<DpSubscriptionFeature> getFeatures() {
+		return features;
+	}
+
+	/**
+	 * Sets the features.
+	 *
+	 * @param features the new features
+	 */
+	public void setFeatures(List<DpSubscriptionFeature> features) {
+		this.features = features;
+	}
+
+	/**
+	 * Sets the domain id.
+	 *
+	 * @param domainId the new domain id
+	 */
+	public void setDomainId(DpDomain domainId) {
+		this.domainId = domainId;
 	}
 
 	

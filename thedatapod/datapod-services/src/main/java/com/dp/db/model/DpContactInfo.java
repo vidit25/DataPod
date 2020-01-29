@@ -26,6 +26,33 @@ public class DpContactInfo implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "address_id")
 	private Integer id;
+	
+	/** The name. */
+	@Column(name = "address_line_1")
+	private String addressLineOne;
+	
+	/** The description. */
+	@Column(name = "address_line_2")
+	private String addressLineTwo;
+	
+	/** The city. */
+	@Column(name = "city")
+	private String city;
+	
+	/** The state. */
+	@Column(name = "state")
+	private String state;
+	
+	
+	/** The country. */
+	@Column(name = "country")
+	private String country;
+	
+	/** The pin code. */
+	@Column(name = "pinCode")
+	private String pinCode;
+	
+
 
 	/**
 	 * Gets the id.
@@ -153,31 +180,6 @@ public class DpContactInfo implements java.io.Serializable {
 		this.pinCode = pinCode;
 	}
 
-	/** The name. */
-	@Column(name = "address_line_1")
-	private String addressLineOne;
-	
-	/** The description. */
-	@Column(name = "address_line_2")
-	private String addressLineTwo;
-	
-	/** The city. */
-	@Column(name = "city")
-	private String city;
-	
-	/** The state. */
-	@Column(name = "state")
-	private String state;
-	
-	
-	/** The country. */
-	@Column(name = "country")
-	private String country;
-	
-	/** The pin code. */
-	@Column(name = "pinCode")
-	private String pinCode;
-	
-	
+		
 	
 }
