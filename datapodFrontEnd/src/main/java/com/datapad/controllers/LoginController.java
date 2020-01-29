@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.datapad.form.UserForm;
-import com.datapad.response.LoginResponse;
 import com.datapad.utils.DataPodConstant;
 
 @Controller
@@ -71,13 +71,12 @@ public class LoginController implements DataPodConstant
 	   HttpEntity<MultiValueMap<String, String>> request = createHeaders(params);
 	   
 	   try {
-		   ResponseEntity<LoginResponse> responseEntity= restTemplate.postForEntity(hostName+loginURI, request, LoginResponse.class);
+		   ResponseEntity<String> responseEntity= restTemplate.postForEntity(hostName+loginURI, request, String.class);
 		   if (responseEntity != null && responseEntity.getBody() != null) {
-			   LoginResponse loginResponse = responseEntity.getBody();
-			   System.out.println("Value of loginResponse..." + loginResponse.getAccess_token());
+			   LOGGER.info("Value of loginResponse..." + responseEntity.getBody());
 		   }
-	   } catch (Exception exception) {
-		   LOGGER.error("Error while login.." + exception.getMessage());
+	   } catch (HttpClientErrorException exception) {
+		   LOGGER.error("Send message error: Response body: {} \nException: ", exception.getResponseBodyAsString(), exception);
 		   model.addAttribute("signinForm", new UserForm());
 		   return "index";
 	   }
