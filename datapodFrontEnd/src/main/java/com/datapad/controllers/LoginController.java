@@ -1,6 +1,9 @@
 package com.datapad.controllers;
 
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -17,13 +20,34 @@ import org.springframework.web.client.RestTemplate;
 
 import com.datapad.form.UserForm;
 import com.datapad.response.LoginResponse;
+import com.datapad.utils.DataPodConstant;
 
 @Controller
-public class LoginController
+public class LoginController implements DataPodConstant
 {
+	@Value("${service.client.id}")
+	private String clientId;
+	
+	@Value("${service.client.secretKey}")
+	private String clientSecretKey;
+	
+	@Value("${service.host}")
+	private String hostName;
+	
+	@Value("${url.signin}")
+	private String loginURI;
+	
+	@Value("${service.api.key}")
+	private String apiKey;
+	
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	
 	
-	
+   /**
+    * This method is used load login screen. 	
+    * @param model
+    * @return
+    */
    @RequestMapping(value = "/", method = RequestMethod.GET)
    public String index(Model model)
    {
@@ -32,31 +56,50 @@ public class LoginController
    }
 
   
+   /**
+    * This method will login.
+    * @param userForm
+    * @return
+    */
    @PostMapping("/login")
-   public String login(@ModelAttribute UserForm userForm) {
+   public String login (@ModelAttribute UserForm userForm, Model model) {
 	   RestTemplate restTemplate = new RestTemplate();
-	   
 	   MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-	   params.add("grant_type", "password");
-	   params.add("username", userForm.getUserName());
-	   params.add("password", userForm.getPassword());
-	   HttpHeaders headers = new HttpHeaders();
-	   String plainCreds = "thedatapod-client:datapod@2020";
-       byte[] plainCredsBytes = plainCreds.getBytes();
-       byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
-       String base64Creds = new String(base64CredsBytes);
-       System.out.println("Value of base64Creds ... " + base64Creds);
-        headers.add("Authorization", "Basic "+base64Creds);
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		headers.add("x-api-key", "AKIARJPM3QSSJFGHPTNO_Dev");
-		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
-		ResponseEntity<LoginResponse> responseEntity= restTemplate.postForEntity("http://127.0.0.1:8081/oauth/token", request, LoginResponse.class);
-		
-		if (responseEntity != null && responseEntity.getBody() != null) {
-			LoginResponse loginResponse = responseEntity.getBody();
-			System.out.println("Value of loginResponse..." + loginResponse.getAccess_token());
-		}
+	   params.add(GRANT_TYPE, PASSWORD);
+	   params.add(USER_NAME, userForm.getUserName());
+	   params.add(PASSWORD, userForm.getPassword());
+	   HttpEntity<MultiValueMap<String, String>> request = createHeaders(params);
+	   
+	   try {
+		   ResponseEntity<LoginResponse> responseEntity= restTemplate.postForEntity(hostName+loginURI, request, LoginResponse.class);
+		   if (responseEntity != null && responseEntity.getBody() != null) {
+			   LoginResponse loginResponse = responseEntity.getBody();
+			   System.out.println("Value of loginResponse..." + loginResponse.getAccess_token());
+		   }
+	   } catch (Exception exception) {
+		   LOGGER.error("Error while login.." + exception.getMessage());
+		   model.addAttribute("signinForm", new UserForm());
+		   return "index";
+	   }
 	   return "dashboard";
+   }
+
+   /**
+    * This method will create request headers
+    * @param params
+    * @return
+    */
+   private HttpEntity<MultiValueMap<String, String>> createHeaders (MultiValueMap<String, String> params) {
+	   HttpHeaders headers = new HttpHeaders();
+	   String plainCreds = clientId+COLAN_SEPARATOR+clientSecretKey;
+	   byte[] plainCredsBytes = plainCreds.getBytes();
+	   byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
+	   String base64Creds = new String(base64CredsBytes);
+	   headers.add(AUTHORIZATION, "Basic "+base64Creds);
+	   headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+	   headers.add(X_API_KEY, apiKey);
+	   HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+	   return request;
    }
    
    
