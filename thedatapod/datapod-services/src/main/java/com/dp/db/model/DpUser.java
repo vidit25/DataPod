@@ -65,10 +65,7 @@ public class DpUser implements java.io.Serializable {
 	@Column(name = "last_login")
 	private Timestamp lastLogin;
 
-	/** The user status. */
-	@Column(name = "status")
-	private String status;
-
+	
 	/** The password reset flag. */
 	@Column(name = "reset_flag")
 	private Boolean resetFlag;
@@ -95,9 +92,6 @@ public class DpUser implements java.io.Serializable {
 	@OrderBy
 	private List<DpAuthority> authorities;
 	
-	/** The user type. */
-	@Column(name = "type")
-	private String type;
 	
 
 	@OneToOne(cascade = CascadeType.ALL)
@@ -233,24 +227,7 @@ public class DpUser implements java.io.Serializable {
 		this.lastLogin = lastLogin;
 	}
 
-	/**
-	 * Gets the status.
-	 *
-	 * @return the status
-	 */
-	public String getStatus() {
-		return status;
-	}
-
-	/**
-	 * Sets the status.
-	 *
-	 * @param status the status to set
-	 */
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
+	
 	/**
 	 * Gets the user id.
 	 *
@@ -378,20 +355,7 @@ public class DpUser implements java.io.Serializable {
 		this.resetFlag = resetFlag;
 	}
 
-	/**
-	 * @return the type
-	 */
-	public String getType() {
-		return type;
-	}
-
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(String type) {
-		this.type = type;
-	}
-
+	
 	
 	public DpAccount getAccountId() {
 		return accountId;
