@@ -42,26 +42,11 @@ public class SubscriptionForm {
 	/** The sub domain ids. */
 	private List<Integer> subDomainIds;
 	
+	
 	/** The domain id. */
 	private Integer domainId;
 	
-	/** The addressLineOne. */
-	private String addressLineOne;
-	
-	/** The addressLineTwo. */
-	private String addressLineTwo;
-	
-	/** The city. */
-	private String city;
-	
-	/** The state. */
-	private String state;	
-	
-	/** The country. */
-	private String country;
-	
-	/** The pin code. */
-	private String pinCode;
+	private AddressForm address;
 
 	/**
 	 * Gets the id.
@@ -263,90 +248,17 @@ public class SubscriptionForm {
 	}
 
 	/**
-	 * @return the addressLineOne
+	 * @return the address
 	 */
-	public String getAddressLineOne() {
-		return addressLineOne;
+	public AddressForm getAddress() {
+		return address;
 	}
 
 	/**
-	 * @param addressLineOne the addressLineOne to set
+	 * @param address the address to set
 	 */
-	public void setAddressLineOne(String addressLineOne) {
-		this.addressLineOne = addressLineOne;
+	public void setAddress(AddressForm address) {
+		this.address = address;
 	}
-
-	/**
-	 * @return the addressLineTwo
-	 */
-	public String getAddressLineTwo() {
-		return addressLineTwo;
-	}
-
-	/**
-	 * @param addressLineTwo the addressLineTwo to set
-	 */
-	public void setAddressLineTwo(String addressLineTwo) {
-		this.addressLineTwo = addressLineTwo;
-	}
-
-	/**
-	 * @return the city
-	 */
-	public String getCity() {
-		return city;
-	}
-
-	/**
-	 * @param city the city to set
-	 */
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	/**
-	 * @return the state
-	 */
-	public String getState() {
-		return state;
-	}
-
-	/**
-	 * @param state the state to set
-	 */
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	/**
-	 * @return the country
-	 */
-	public String getCountry() {
-		return country;
-	}
-
-	/**
-	 * @param country the country to set
-	 */
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	/**
-	 * @return the pinCode
-	 */
-	public String getPinCode() {
-		return pinCode;
-	}
-
-	/**
-	 * @param pinCode the pinCode to set
-	 */
-	public void setPinCode(String pinCode) {
-		this.pinCode = pinCode;
-	}
-
-
-	
 	
 }

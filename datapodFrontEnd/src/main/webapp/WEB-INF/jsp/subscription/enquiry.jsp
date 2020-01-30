@@ -45,12 +45,37 @@
 	   			Domain :
 	   		</td>
 	   		<td>
-	   			<form:select path="domainId">
-	   				<form:options items="${domains}" itemValue="domainId" itemLabel="domainName"/>
+	   			<form:select path="domainId" id="domainIds">
+	   					<form:option value="0">Select Domain</form:option>
+	   				 <c:forEach var="domain" items="${domains.response}" varStatus="loop">
+	        			<form:option value="${domain.id}">${domain.name}</form:option>
+	  			 </c:forEach>
+	   			</form:select>
+	   		</td>
+	   	</tr>
+	   	<br/>      	<br/>
+	   		<tr>
+	   		<td>
+	   			Subscription Type :
+	   		</td>
+	   		<td>
+	   			<form:select path="subscriptionTypeId" id="subscriptionTypeId">
+	   					
 	   			</form:select>
 	   		</td>
 	   	</tr>
 	   	<br/>   	<br/>
+	   	<tr>
+	   		<td>
+	   			Sub Domain :
+	   		</td>
+	   		<td>
+	   			<form:select path="subDomainIds" id="subDomainIds">
+	   				 
+	   			</form:select>
+	   		</td>
+	   	</tr>
+	   	<br/> <br/>
 	   	<tr>
 	   		<td>
 	   			phone :
@@ -66,7 +91,7 @@
 	   			Address Line 1 :
 	   		</td>
 	   		<td>
-	   			<form:input path="addressLineOne"/>
+	   			<form:input path="address.addressLineOne"/>
 	   		</td>
 	   	</tr>	
 	   	<br/>    	<br/>
@@ -76,7 +101,7 @@
 	   			Address Line 2 :
 	   		</td>
 	   		<td>
-	   			<form:input path="addressLineTwo"/>
+	   			<form:input path="address.addressLineTwo"/>
 	   		</td>
 	   	</tr>
 	   	<br/>    	<br/>
@@ -86,7 +111,7 @@
 	   			City :
 	   		</td>
 	   		<td>
-	   			<form:input path="city"/>
+	   			<form:input path="address.city"/>
 	   		</td>
 	   	</tr>
 	   	
@@ -96,7 +121,7 @@
 	   			State :
 	   		</td>
 	   		<td>
-	   			<form:input path="state"/>
+	   			<form:input path="address.state"/>
 	   		</td>
 	   	</tr>
 	   	<br/>   	<br/>
@@ -105,7 +130,7 @@
 	   			Country :
 	   		</td>
 	   		<td>
-	   			<form:input path="country"/>
+	   			<form:input path="address.country"/>
 	   		</td>
 	   	</tr>
 	   	<br/>   	<br/>
@@ -114,7 +139,7 @@
 	   			PinCode :
 	   		</td>
 	   		<td>
-	   			<form:input path="pinCode"/>
+	   			<form:input path="address.pinCode"/>
 	   		</td>
 	   	</tr>
 	   	
@@ -124,3 +149,41 @@
 	   
     </jsp:body>
 </t:pageTemplate>
+<script type="text/javascript">
+$(document).ready(function () {
+         $("#domainIds").change(function () {
+             var dID= $(this).val();             
+             $.getJSON("/getSubDomains", { domainId: dID },
+                    function (data) {
+                        var select = $("#subDomainIds");
+                        select.empty();
+                        select.append($('<option/>', {
+                            value: 0,
+                            text: "Select a SubDomain"
+                        }));
+                        $.each(data.response.subDomains, function (index, itemData) {
+                            select.append($('<option/>', {
+                                value: itemData.id,
+                                text: itemData.name
+                            }));
+                        });
+                    });
+             
+             $.getJSON("/getSubscriptionType", { domainId: dID },
+                     function (data) {
+                         var select = $("#subscriptionTypeId");
+                         select.empty();
+                         select.append($('<option/>', {
+                             value: 0,
+                             text: "Select a Subscription Type"
+                         }));
+                         $.each(data.response, function (index, itemData) {
+                             select.append($('<option/>', {
+                                 value: itemData.id,
+                                 text: itemData.name
+                             }));
+                         });
+                     });
+         });
+});
+</script>

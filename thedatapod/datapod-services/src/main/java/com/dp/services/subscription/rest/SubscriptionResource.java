@@ -175,11 +175,12 @@ public class SubscriptionResource {
 	 * @param apiKey the api key
 	 * @return the generic response VO
 	 */
-	@PostMapping(value = "/api/subscribe")
+	@PostMapping(value = "/subscribe")
 	public @ResponseBody GenericResponseVO handleUserSubscription(@RequestBody UserSubscriptionRequest pRequest,
 			@RequestHeader(name = "x-api-Key") String apiKey) {
 		GenericResponseVO subscriptionTypeResponse = new GenericResponseVO();
-		LOGGER.debug("SubscriptionResource: handleUserSubscription - request ");
+		LOGGER.debug("SubscriptionResource: handleUserSubscription - request " + pRequest.getEmail());
+		System.out.println("Value of subscripton email id" + pRequest.getEmail());
 		try {
 			subscriptionTypeResponse = subscriptionManager.createUserSubscription(pRequest);			
 		} catch (GenericException e) {
