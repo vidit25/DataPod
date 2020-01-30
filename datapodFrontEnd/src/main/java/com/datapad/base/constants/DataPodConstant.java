@@ -21,8 +21,12 @@ public interface DataPodConstant {
 	
 	public static final String COLON_SEPARATOR = ":";
 	
+	public static final String SLASH = "/";
+	
 	public static final String NAME = "name";
 	
 	public static final String DESCRIPTION = "description";
+	
+	public static final String DOMAIN_ID = "domainId";
 
 }

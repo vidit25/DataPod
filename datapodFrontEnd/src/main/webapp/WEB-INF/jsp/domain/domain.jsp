@@ -23,8 +23,7 @@
 	   </tr>
 	   <c:forEach var="domain" items="${response.response}" varStatus="loop">
 	        <tr>
-		    	<%-- <th>${domain.id}</th><th>${domain.name}</th><th>${domain.description}</th> --%>
-		    	<td><a href="#">${domain.id}</a></td><td>${domain.name}</td><td>${domain.description}</td>
+		    	<td><a href="/domainDetails/${domain.id}">${domain.id}</a></td><td>${domain.name}</td><td>${domain.description}</td>
 	   		</tr>
 	   </c:forEach>
 	   </table>
