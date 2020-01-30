@@ -12,6 +12,7 @@
 	   <header class="align-center">
 	      <h2>Login Screen for DataPod</h2>
 	   </header>
+	   <tr><a href="/enquiry">Enquiry Form</a></tr>
 	   	<form:form action="/login" method="POST" modelAttribute="signinForm">
 	   		<tr>
 	   			<td>
@@ -37,5 +38,7 @@
 	   		</tr>
 	   	
 	   </form:form>
+	   
+	   
     </jsp:body>
 </t:pageTemplate>
