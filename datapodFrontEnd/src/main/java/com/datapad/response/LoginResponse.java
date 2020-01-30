@@ -3,38 +3,33 @@
  */
 package com.datapad.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author DataPod
  *
  */
 public class LoginResponse {
+	@JsonProperty("access_token")
+	private String accessToken;
 	
-	private String access_token;
-	private String token_type;
-	/**
-	 * @return the access_token
-	 */
-	public String getAccess_token() {
-		return access_token;
+	@JsonProperty("token_type")
+	private String tokenType;
+
+	public String getAccessToken() {
+		return accessToken;
 	}
-	/**
-	 * @param access_token the access_token to set
-	 */
-	public void setAccess_token(String access_token) {
-		this.access_token = access_token;
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
 	}
-	/**
-	 * @return the token_type
-	 */
-	public String getToken_type() {
-		return token_type;
+
+	public String getTokenType() {
+		return tokenType;
 	}
-	/**
-	 * @param token_type the token_type to set
-	 */
-	public void setToken_type(String token_type) {
-		this.token_type = token_type;
+
+	public void setTokenType(String tokenType) {
+		this.tokenType = tokenType;
 	}
-	
 
 }
