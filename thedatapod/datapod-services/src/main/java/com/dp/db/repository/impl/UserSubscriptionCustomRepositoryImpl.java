@@ -42,6 +42,21 @@ public class UserSubscriptionCustomRepositoryImpl implements UserSubscriptionCus
 		}
 		return null;
 	}
+	
+	/**
+	 * Gets the user subscription based on status.
+	 *
+	 * @param pUserName the user name
+	 * @return the user based on user name
+	 * @throws GenericDaoException the generic dao exception
+	 */
+	public List<DpUserSubscription> getUserSubscriptionBasedOnStatus(String status) throws GenericDaoException {
+		Query query = entityManager.createNativeQuery("SELECT * FROM user_subscription " + "WHERE status = ?", DpUserSubscription.class);
+		query.setParameter(1, status);
+		List userSubscription = query.getResultList();
+		
+		return userSubscription;
+	}
 
 	
 }

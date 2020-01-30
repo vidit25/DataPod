@@ -509,6 +509,19 @@ public class SubscriptionTools {
 		return userSubscriptions;
 	}
 	
+	
+	/**
+	 * Gets the subscriptions based on status.
+	 *
+	 * @return the all subscriptions
+	 * @throws GenericDaoException the generic dao exception
+	 */
+	public List<DpUserSubscription> getSubscrptionsBasedOnStatus(String status) throws GenericDaoException {
+		List<DpUserSubscription> userSubscriptions = null;
+		userSubscriptions = userSubscriptionRepository.getUserSubscriptionBasedOnStatus(status);
+		return userSubscriptions;
+	}
+	
 	public DpUserSubscription saveUserSubscription(DpUserSubscription pUserSubscription) {
 		if (pUserSubscription != null) {
 			pUserSubscription = userSubscriptionRepository.save(pUserSubscription);

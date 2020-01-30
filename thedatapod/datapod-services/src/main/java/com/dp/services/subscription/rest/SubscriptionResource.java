@@ -221,10 +221,40 @@ public class SubscriptionResource {
 			subscriptionTypeResponse = new GenericResponseVO(false, errorMsg);
 			LOGGER.error(e.getMessage(), e);
 		}
-		LOGGER.debug("SubscriptionResource: handleGetSubscriptionType - request handled");
+		LOGGER.debug("SubscriptionResource: handleGetAllSubscriptions - request handled");
 		return subscriptionTypeResponse;
 	}
 	
+	
+	/**
+	 * Handle get all subscriptions.
+	 *
+	 * @param apiKey the api key
+	 * @return the generic response VO
+	 */
+	@GetMapping(value = "/api/subscriptions/{status}")
+	public @ResponseBody GenericResponseVO handleGetSubscriptionsBasedOnStatus(@RequestHeader(name = "x-api-Key") String apiKey, @PathVariable String status) {
+		GenericResponseVO subscriptionTypeResponse = new GenericResponseVO();
+		LOGGER.debug("SubscriptionResource: handleGetSubscriptionsBasedOnStatus - request ");
+		try {
+			List<DpUserSubscription> subscriptions = subscriptionManager.getSubscriptionsBasedOnStatus(status);
+			if (subscriptions != null && !subscriptions.isEmpty()) {
+				subscriptionTypeResponse =  new GenericResponseVO(true, subscriptions);
+			} else {
+				String lMessage = resourceBundleHelperComponent.getMessage(Error.SUBSCRIPTIONS_NOT_FOUND.getLabel(), null);
+				List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(Error.SUBSCRIPTIONS_NOT_FOUND.getCode(),
+						Error.SUBSCRIPTIONS_NOT_FOUND.getLabel(), lMessage);
+				subscriptionTypeResponse = new GenericResponseVO(false, errorMsg);
+			}
+		} catch(Exception e) {
+			List<ErrorResponseVO> errorMsg = DpUtils.generateErrorMsg(Error.SYSTEM_ERROR.getCode(),
+					Error.SYSTEM_ERROR.getLabel(), e.getMessage());
+			subscriptionTypeResponse = new GenericResponseVO(false, errorMsg);
+			LOGGER.error(e.getMessage(), e);
+		}
+		LOGGER.debug("SubscriptionResource: handleGetSubscriptionsBasedOnStatus - request handled");
+		return subscriptionTypeResponse;
+	}
 
 
 }

@@ -241,4 +241,15 @@ public class SubscriptionServiceManager {
 	}
 	
 	
+	/**
+	 * Gets the all subscriptions.
+	 *
+	 * @return the all domains
+	 * @throws GenericDaoException the generic dao exception
+	 */
+	public List<DpUserSubscription> getSubscriptionsBasedOnStatus(String status) throws GenericDaoException {
+		List<DpUserSubscription> userSubscriptions = subscriptionTools.getSubscrptionsBasedOnStatus(status);
+		return userSubscriptions;
+	}
+	
 }
