@@ -73,7 +73,7 @@ public class BaseService {
 	}
 	
 	protected <T> T doGet(String serviceURL,Map params,Class<T> responseType) {
-		return callService(serviceURL, params, HttpMethod.GET, MediaType.APPLICATION_JSON,responseType,true);
+		return callService(serviceURL, params, HttpMethod.GET, MediaType.APPLICATION_JSON,responseType,false);
 	}
 	
 	protected <T> T doPut(String serviceURL,Map params,Class<T> responseType) {
