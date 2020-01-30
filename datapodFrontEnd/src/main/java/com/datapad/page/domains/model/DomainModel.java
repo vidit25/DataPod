@@ -1,21 +1,35 @@
 package com.datapad.page.domains.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.datapad.base.models.GenericModel;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-public class DomainModel extends GenericModel {
+
+public class DomainModel extends GenericModel implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5030946195498688528L;
+	
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private int id;
 	
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private String name;
 	
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private String description;
 	
-	private List<DomainModel> response;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private Object response;
 	
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private List<DomainModel> subDomains;
 	
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private String status;
 
 	public int getId() {
@@ -58,11 +72,11 @@ public class DomainModel extends GenericModel {
 		this.status = status;
 	}
 
-	public List<DomainModel> getResponse() {
+	public Object getResponse() {
 		return response;
 	}
 
-	public void setResponse(List<DomainModel> response) {
+	public void setResponse(Object response) {
 		this.response = response;
 	}
 	

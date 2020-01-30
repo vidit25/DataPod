@@ -9,6 +9,12 @@
   
    <jsp:body>
 	   <header class="align-center">
+	   <style>
+		table, th, td {
+		  border: 1px solid black;
+		  border-collapse: collapse;
+		}
+		</style>
 	      <h2>Domain Screen</h2>
 	   </header>
 	   <table style="width:100%">
@@ -22,15 +28,30 @@
 	   		</tr>
 	   </c:forEach>
 	   </table>
-	   <%-- <form:form action="/domain" method="GET" modelAttribute="domains">
+	  <form:form action="/domain" method="POST" modelAttribute="newDomainModel">
+	   		<tr>    
+	   		    <td>
+	   				Name : 
+	   			</td>
+	   			
+	   			<td>
+	   				<form:input path="name" />
+	   			</td>
+	   		</tr>
+	   		<tr></tr>
 	   		<tr>
-	   			<c:out value="${domains.response}"></c:out>
+	   			<td>
+	   				Description : 
+	   			</td>
+	   			<td>
+	   				<form:input path="description"/>
+	   			</td>
 	   		</tr>
 	   		<br/>
 	   		<tr>
-	   			<form:button value="Domain" >Get Domains</form:button>
+	   			<form:button value="Domain">Add Domains</form:button>
 	   		</tr>
 	   	
-	   </form:form> --%>
+	   </form:form>
     </jsp:body>
 </t:pageTemplate>

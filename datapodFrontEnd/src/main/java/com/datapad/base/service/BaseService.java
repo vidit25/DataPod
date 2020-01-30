@@ -1,10 +1,11 @@
 package com.datapad.base.service;
 
-import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,8 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.datapad.base.constants.DataPodConstant;
 
@@ -35,6 +34,9 @@ public class BaseService {
 	@Value("${service.api.key}")
 	public String apiKey;
 	
+	@Autowired
+	private SessionService sessionService;
+	
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	
 	/**
@@ -50,9 +52,7 @@ public class BaseService {
 	   
 	   //Get the token from session and set it in header.
 	   if(isTokenAuth) {
-		   ServletRequestAttributes servletReqAttribs = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-		   HttpSession session= servletReqAttribs.getRequest().getSession(true);
-		   String authToken = (String) session.getAttribute("authToken");
+		   String authToken = (String) sessionService.getCurrentSession().getAttribute("authToken");
 		   headers.setBearerAuth(authToken);
 	   } else {
 		   String plainCreds = clientId+DataPodConstant.COLON_SEPARATOR+clientSecretKey;
@@ -64,33 +64,33 @@ public class BaseService {
 	   return headers;
 	}
 	
-	protected <T> T doPost(String serviceURL,MultiValueMap params,Class<T> responseType) {
+	protected <T> T doPost(String serviceURL,Map params,Class<T> responseType) {
 		return callService(serviceURL, params, HttpMethod.POST, MediaType.APPLICATION_JSON,responseType,true);
 	}
 	
-	protected <T> T doPost(String serviceURL,MultiValueMap params,MediaType contentType,Class<T> responseType) {
+	protected <T> T doPost(String serviceURL,Map params,MediaType contentType,Class<T> responseType) {
 		return callService(serviceURL, params, HttpMethod.POST, contentType,responseType,false);
 	}
 	
-	protected <T> T doGet(String serviceURL,MultiValueMap params,Class<T> responseType) {
+	protected <T> T doGet(String serviceURL,Map params,Class<T> responseType) {
 		return callService(serviceURL, params, HttpMethod.GET, MediaType.APPLICATION_JSON,responseType,true);
 	}
 	
-	protected <T> T doPut(String serviceURL,MultiValueMap params,Class<T> responseType) {
+	protected <T> T doPut(String serviceURL,Map params,Class<T> responseType) {
 		return callService(serviceURL, params, HttpMethod.PUT, MediaType.APPLICATION_JSON,responseType,true);
 	}
 	
-	protected <T> T doDelete(String serviceURL,MultiValueMap params,Class<T> responseType) {
+	protected <T> T doDelete(String serviceURL,Map params,Class<T> responseType) {
 		return callService(serviceURL, params, HttpMethod.DELETE, MediaType.APPLICATION_JSON,responseType,true);
 	}
 	
-	protected <T> T doPatch(String serviceURL,MultiValueMap params,Class<T> responseType) {
+	protected <T> T doPatch(String serviceURL,Map params,Class<T> responseType) {
 		return callService(serviceURL, params, HttpMethod.PATCH, MediaType.APPLICATION_JSON, responseType,true);
 	}
 	
 	
 	
-	private <T> T callService(String serviceURL,MultiValueMap params,HttpMethod httpMethod,MediaType contentType,Class<T> responseType,boolean isTokenAuth) {
+	private <T> T callService(String serviceURL,Map params,HttpMethod httpMethod,MediaType contentType,Class<T> responseType,boolean isTokenAuth) {
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = createHeaders(isTokenAuth);
 		headers.setContentType(contentType);
@@ -104,19 +104,22 @@ public class BaseService {
 				responseEntity= restTemplate.exchange(endpointURL, HttpMethod.GET, headerEntity, responseType);
 				break;
 			case POST:
-				HttpEntity<MultiValueMap<String, String>> postRequestEntity = new HttpEntity<>(params, headers);
-				responseEntity= restTemplate.postForEntity(endpointURL, postRequestEntity, responseType);
+				HttpEntity<Map<String, String>> postRequestEntity = new HttpEntity<>(params, headers);
+				LOGGER.info(postRequestEntity.getBody().toString());
+				LOGGER.info(postRequestEntity.getHeaders().toString());
+				responseEntity= restTemplate.exchange(endpointURL, HttpMethod.POST, postRequestEntity, responseType);
+//				responseEntity= restTemplate.postForEntity(endpointURL, postRequestEntity, responseType);
 				break;
 			case PUT:
-				HttpEntity<MultiValueMap<String, String>> putRequestEntity = new HttpEntity<>(params, headers);
+				HttpEntity<Map<String, String>> putRequestEntity = new HttpEntity<>(params, headers);
 				responseEntity= restTemplate.exchange(endpointURL, HttpMethod.PUT, putRequestEntity, responseType);
 				break;
 			case PATCH:
-				HttpEntity<MultiValueMap<String, String>> patchRequestEntity = new HttpEntity<>(params, headers);
+				HttpEntity<Map<String, String>> patchRequestEntity = new HttpEntity<>(params, headers);
 				responseEntity= restTemplate.exchange(endpointURL, HttpMethod.PATCH, patchRequestEntity, responseType);
 				break;		
 			case DELETE:
-				HttpEntity<MultiValueMap<String, String>> deleteRequestEntity = new HttpEntity<>(params, headers);
+				HttpEntity<Map<String, String>> deleteRequestEntity = new HttpEntity<>(params, headers);
 				responseEntity= restTemplate.exchange(endpointURL, HttpMethod.DELETE, deleteRequestEntity, responseType);
 				break;	
 			default:

@@ -20,5 +20,9 @@ public interface DataPodConstant {
 	public static final String X_API_KEY="x-api-key";
 	
 	public static final String COLON_SEPARATOR = ":";
+	
+	public static final String NAME = "name";
+	
+	public static final String DESCRIPTION = "description";
 
 }
