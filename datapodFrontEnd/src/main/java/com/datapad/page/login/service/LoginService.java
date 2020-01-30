@@ -17,7 +17,7 @@ import com.datapad.form.UserForm;
 import com.datapad.page.login.model.LoginModel;
 
 @Component
-public class LoginService extends BaseService {
+public class LoginService extends BaseService implements DataPodConstant {
 	
 	
 	
@@ -26,9 +26,9 @@ public class LoginService extends BaseService {
 	
 	public boolean doLogin(UserForm userForm) {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.add(DataPodConstant.GRANT_TYPE, DataPodConstant.PASSWORD);
-		params.add(DataPodConstant.USER_NAME, userForm.getUserName());
-		params.add(DataPodConstant.PASSWORD, userForm.getPassword());
+		params.add(GRANT_TYPE, DataPodConstant.PASSWORD);
+		params.add(USER_NAME, userForm.getUserName());
+		params.add(PASSWORD, userForm.getPassword());
 		LoginModel loginResponse = doPost(loginURL, params, MediaType.APPLICATION_FORM_URLENCODED,LoginModel.class);
 		if(null != loginResponse && null != loginResponse.getAccessToken() && !StringUtils.isEmpty(loginResponse.getAccessToken())) {
 			ServletRequestAttributes servletReqAttribs = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
