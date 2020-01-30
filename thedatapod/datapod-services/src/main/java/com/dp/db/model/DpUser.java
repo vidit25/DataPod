@@ -99,10 +99,7 @@ public class DpUser implements java.io.Serializable {
 	@Column(name = "type")
 	private String type;
 	
-	/** The user role. */
-	@Column(name = "role")
-	private String role;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "account_id", referencedColumnName = "account_id")
 	private DpAccount accountId;
@@ -395,20 +392,7 @@ public class DpUser implements java.io.Serializable {
 		this.type = type;
 	}
 
-	/**
-	 * @return the role
-	 */
-	public String getRole() {
-		return role;
-	}
-
-	/**
-	 * @param role the role to set
-	 */
-	public void setRole(String role) {
-		this.role = role;
-	}
-
+	
 	public DpAccount getAccountId() {
 		return accountId;
 	}
