@@ -44,7 +44,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 				.antMatchers(HttpMethod.POST, SECURED_PATTERN).access(SECURED_USER_SCOPE)
 				.antMatchers(HttpMethod.GET, "/swagger-resources/**", "/v2/api-docs",
 						"/swagger-ui.html", "/webjars/**", "favicon.ico", "/health", "/info")
-				.permitAll().antMatchers(HttpMethod.GET, SECURED_PATTERN).access(SECURED_USER_SCOPE)
+				.permitAll().antMatchers(HttpMethod.GET, SECURED_PATTERN).permitAll()
 				.antMatchers(HttpMethod.POST, SECURED_PATTERN).access(SECURED_USER_SCOPE)
 				.antMatchers(HttpMethod.DELETE, SECURED_PATTERN).access(SECURED_USER_SCOPE).anyRequest().permitAll()
 				.and().csrf().disable();
