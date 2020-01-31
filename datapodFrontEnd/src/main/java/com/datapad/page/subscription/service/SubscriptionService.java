@@ -1,8 +1,6 @@
 package com.datapad.page.subscription.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +65,10 @@ public class SubscriptionService {
 	public GenericModel activateSubcription(Integer id) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("subscriptionId", id);
-		GenericModel response = doPost(activateSubscriptionURL, params,GenericModel.class);
+		ServiceModel serviceModel = new ServiceModel.ServiceModelBuilder()
+				.serviceURL(activateSubscriptionURL).params(params).isUseTokenAuth(false)
+				.contentType(MediaType.APPLICATION_JSON).build();
+		GenericModel response = baseService.doPost(serviceModel,GenericModel.class);
 		return response;
 	}
 	
@@ -94,7 +95,11 @@ public class SubscriptionService {
 	public SubscriptionModel getSubscriptionByInitiatedStatus() {
 		Map<String, Object> params = new HashMap<String, Object>();
 		String endpointURL = retrieveSubscriptionByStatusURL+DataPodConstant.SLASH+"INITIATED";
-		SubscriptionModel response = doGet(endpointURL, params, SubscriptionModel.class);
+		ServiceModel serviceModel = new ServiceModel.ServiceModelBuilder()
+				.serviceURL(endpointURL).params(params).isUseTokenAuth(false)
+				.contentType(MediaType.APPLICATION_JSON).build();
+		
+		SubscriptionModel response = baseService.doGet(serviceModel, SubscriptionModel.class);
 		return response;
 	}
 	
