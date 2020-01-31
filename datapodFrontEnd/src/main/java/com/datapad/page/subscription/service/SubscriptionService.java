@@ -51,7 +51,7 @@ public class SubscriptionService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params = mapper.convertValue(subscriptionForm, Map.class);
 		ServiceModel serviceModel = new ServiceModel.ServiceModelBuilder()
-				.serviceURL(createSubcriptionURL).params(params).isUseTokenAuth(true)
+				.serviceURL(createSubcriptionURL).params(params).isUseTokenAuth(false)
 				.contentType(MediaType.APPLICATION_JSON).build();
 		GenericModel response = baseService.doPost(serviceModel,GenericModel.class);
 		return response;
