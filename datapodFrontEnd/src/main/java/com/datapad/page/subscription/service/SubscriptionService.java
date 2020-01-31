@@ -66,7 +66,7 @@ public class SubscriptionService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("subscriptionId", id);
 		ServiceModel serviceModel = new ServiceModel.ServiceModelBuilder()
-				.serviceURL(activateSubscriptionURL).params(params).isUseTokenAuth(false)
+				.serviceURL(activateSubscriptionURL).params(params).isUseTokenAuth(true)
 				.contentType(MediaType.APPLICATION_JSON).build();
 		GenericModel response = baseService.doPost(serviceModel,GenericModel.class);
 		return response;
