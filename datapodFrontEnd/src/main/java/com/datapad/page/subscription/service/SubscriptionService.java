@@ -5,19 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import com.datapad.base.constants.DataPodConstant;
 import com.datapad.base.models.GenericModel;
+import com.datapad.base.models.ServiceModel;
 import com.datapad.base.service.BaseService;
 import com.datapad.form.SubscriptionForm;
 import com.datapad.page.subscriptionType.model.SubscrptionTypeModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
-public class SubscriptionService extends BaseService {
+public class SubscriptionService {
 	
 	
 	/**
@@ -29,6 +31,8 @@ public class SubscriptionService extends BaseService {
 	@Value("${endpoint.retrieveSubscriptionTypeByDomainURL}")
 	public String retrieveSubscriptionTypeByDomainURL;
 	
+	@Autowired
+	private BaseService baseService;
     /**
      * 
      * @param subscriptionForm
@@ -39,7 +43,10 @@ public class SubscriptionService extends BaseService {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params = mapper.convertValue(subscriptionForm, Map.class);
-		GenericModel response = doPost(createSubcriptionURL, params, MediaType.APPLICATION_JSON,GenericModel.class);
+		ServiceModel serviceModel = new ServiceModel.ServiceModelBuilder()
+				.serviceURL(createSubcriptionURL).params(params).isUseTokenAuth(true)
+				.contentType(MediaType.APPLICATION_JSON).build();
+		GenericModel response = baseService.doPost(serviceModel,GenericModel.class);
 		return response;
 	}
 	
@@ -51,7 +58,10 @@ public class SubscriptionService extends BaseService {
 	public SubscrptionTypeModel getSubscriptionTypeByDomain(String domainId) {
 		String endpointURL = retrieveSubscriptionTypeByDomainURL+DataPodConstant.SLASH+domainId;
 		Map<String, Object> params = new HashMap<String, Object>();
-		SubscrptionTypeModel response = doGet(endpointURL, params, SubscrptionTypeModel.class);
+		ServiceModel serviceModel = new ServiceModel.ServiceModelBuilder()
+				.serviceURL(endpointURL).params(params).isUseTokenAuth(false)
+				.contentType(MediaType.APPLICATION_JSON).build();
+		SubscrptionTypeModel response = baseService.doGet(serviceModel, SubscrptionTypeModel.class);
 		return response;
 	}
 	

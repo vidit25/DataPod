@@ -2,17 +2,20 @@ package com.datapad.page.domains.service;
 
 import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.datapad.base.constants.DataPodConstant;
+import com.datapad.base.models.ServiceModel;
 import com.datapad.base.service.BaseService;
 import com.datapad.page.domains.model.DomainModel;
 
 @Component
-public class DomainService extends BaseService {
+public class DomainService {
 	
 	
 	
@@ -22,16 +25,25 @@ public class DomainService extends BaseService {
 	@Value("${endpoint.subDomainURL}")
 	public String subDomainURL;
 	
+	@Autowired
+	public BaseService baseService;
+	
 	public DomainModel getAllDomains() {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		DomainModel response = doGet(domainURL, params, DomainModel.class);
+		ServiceModel serviceModel = new ServiceModel.ServiceModelBuilder()
+				.serviceURL(domainURL).params(params).isUseTokenAuth(false)
+				.contentType(MediaType.APPLICATION_JSON).build();
+		DomainModel response = baseService.doGet(serviceModel, DomainModel.class);
 		return response;
 	}
 	
 	public DomainModel getDomainById(String id) {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		String endpointURL = domainURL+DataPodConstant.SLASH+id;
-		DomainModel response = doGet(endpointURL, params, DomainModel.class);
+		ServiceModel serviceModel = new ServiceModel.ServiceModelBuilder()
+				.serviceURL(endpointURL).params(params).isUseTokenAuth(false)
+				.contentType(MediaType.APPLICATION_JSON).build();
+		DomainModel response = baseService.doGet(serviceModel, DomainModel.class);
 		return response;
 	}
 	
@@ -41,7 +53,10 @@ public class DomainService extends BaseService {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put(DataPodConstant.NAME, domainModel.getName());
 		params.put(DataPodConstant.DESCRIPTION, domainModel.getDescription());
-		DomainModel response = doPost(domainURL, params, DomainModel.class);
+		ServiceModel serviceModel = new ServiceModel.ServiceModelBuilder()
+				.serviceURL(domainURL).params(params).isUseTokenAuth(true)
+				.contentType(MediaType.APPLICATION_JSON).build();
+		DomainModel response = baseService.doPost(serviceModel, DomainModel.class);
 		return response;
 	}
 	
@@ -60,7 +75,10 @@ public class DomainService extends BaseService {
 		params.put(DataPodConstant.DOMAIN_ID, String.valueOf(domainModel.getId()));
 		params.put(DataPodConstant.NAME, domainModel.getName());
 		params.put(DataPodConstant.DESCRIPTION, domainModel.getDescription());
-		DomainModel response = doPost(subDomainURL, params, DomainModel.class);
+		ServiceModel serviceModel = new ServiceModel.ServiceModelBuilder()
+				.serviceURL(subDomainURL).params(params).isUseTokenAuth(true)
+				.contentType(MediaType.APPLICATION_JSON).build();
+		DomainModel response = baseService.doPost(serviceModel, DomainModel.class);
 		return response;
 	}
 
