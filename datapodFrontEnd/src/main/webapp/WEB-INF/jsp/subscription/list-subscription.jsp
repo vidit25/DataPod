@@ -5,9 +5,11 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <t:pageTemplate>
-  
-  
    <jsp:body>
+   	<br/> <br/>
+   		<a href="/dashboard"> Back to DashBoard</a>
+  
+  	<br/> <br/>
 	   <header class="align-center">
 	      <h2>Subscription List</h2>
 	       <style>
@@ -42,7 +44,7 @@ $(document).ready(function () {
 			            //$('p').append('status: ' + status + ', data: ' + data);
 
 			        }).done(function() { alert('Request done!'); })
-			        .fail(function(jqxhr, settings, ex) { alert('failed, ' + ex); });
+			        .fail(function(jqxhr, settings, ex) {  });
 	 });
 	
 });
