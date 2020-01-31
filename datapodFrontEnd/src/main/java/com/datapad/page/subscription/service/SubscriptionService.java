@@ -13,6 +13,7 @@ import com.datapad.base.constants.DataPodConstant;
 import com.datapad.base.models.GenericModel;
 import com.datapad.base.service.BaseService;
 import com.datapad.form.SubscriptionForm;
+import com.datapad.page.subscription.model.SubscriptionModel;
 import com.datapad.page.subscriptionType.model.SubscrptionTypeModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -29,6 +30,14 @@ public class SubscriptionService extends BaseService {
 	@Value("${endpoint.retrieveSubscriptionTypeByDomainURL}")
 	public String retrieveSubscriptionTypeByDomainURL;
 	
+	@Value("${endpoint.retrieveSubscriptionByStatusURL}")
+	public String retrieveSubscriptionByStatusURL;
+	
+	
+	@Value("${endpoint.activateSubscriptionURL}")
+	public String activateSubscriptionURL;
+	
+	
     /**
      * 
      * @param subscriptionForm
@@ -44,6 +53,18 @@ public class SubscriptionService extends BaseService {
 	}
 	
 	/**
+	 * This method will activate subscription
+	 * @param id
+	 * @return
+	 */
+	public GenericModel activateSubcription(Integer id) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("subscriptionId", id);
+		GenericModel response = doPost(activateSubscriptionURL, params,GenericModel.class);
+		return response;
+	}
+	
+	/**
 	 * 
 	 * @param domainId
 	 * @return
@@ -52,6 +73,18 @@ public class SubscriptionService extends BaseService {
 		String endpointURL = retrieveSubscriptionTypeByDomainURL+DataPodConstant.SLASH+domainId;
 		Map<String, Object> params = new HashMap<String, Object>();
 		SubscrptionTypeModel response = doGet(endpointURL, params, SubscrptionTypeModel.class);
+		return response;
+	}
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public SubscriptionModel getSubscriptionByInitiatedStatus() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		String endpointURL = retrieveSubscriptionByStatusURL+DataPodConstant.SLASH+"INITIATED";
+		SubscriptionModel response = doGet(endpointURL, params, SubscriptionModel.class);
 		return response;
 	}
 	

@@ -12,6 +12,9 @@
 	      <h2>DashBoard Screen</h2>
 	   </header>
 	   <a href="/domain">Domains</a>
+	   <br/>
+	   <br/>
+	   <a href="/list-subscription">Subscriptions</a>
 	   
     </jsp:body>
 </t:pageTemplate>
