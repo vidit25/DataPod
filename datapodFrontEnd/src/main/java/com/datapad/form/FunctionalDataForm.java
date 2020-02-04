@@ -20,6 +20,8 @@ public class FunctionalDataForm {
 	
 	private List<Integer> dataElementIds;
 
+	private List<Integer> sourceDataElementIds;
+
 
 	/**
 	 * @return the subDomainIds
@@ -66,6 +68,22 @@ public class FunctionalDataForm {
 	 */
 	public void setDataElementIds(List<Integer> dataElementIds) {
 		this.dataElementIds = dataElementIds;
+	}
+
+
+	/**
+	 * @return the sourcecDataElementIds
+	 */
+	public List<Integer> getSourceDataElementIds() {
+		return sourceDataElementIds;
+	}
+
+
+	/**
+	 * @param sourcecDataElementIds the sourcecDataElementIds to set
+	 */
+	public void setSourceDataElementIds(List<Integer> sourceDataElementIds) {
+		this.sourceDataElementIds = sourceDataElementIds;
 	}
 	
 
