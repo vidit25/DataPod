@@ -27,6 +27,9 @@
 	   </tr>
 	   </table>
 	   
+	   
+	   <h2>Sub Domain Details</h2>
+	   
 	   <table style="width:100%">
 	   <tr>
 		    <th>ID</th><th>Name</th><th>Description</th>
@@ -37,6 +40,8 @@
 	   		</tr>
 	   </c:forEach>
 	   </table>
+	   
+	   <h2>Add Sub Domain</h2>
        <form:form action="/subDomain" method="POST" modelAttribute="newSubDomainModel">
 	   		<tr>    
 	   		    <td>
@@ -61,6 +66,10 @@
 	   		<tr>
 	   			<form:button value="Domain">Add Sub Domains</form:button>
 	   		</tr>
-	   </form:form>	   
+	   </form:form>	  
+	   
+	   <br/>
+	   <c:set var="currDomainId" value="${response.response.id}" scope="session"/>
+	   <a href="/subscriptionType/${response.response.id}">SubscriptionType</a> 
     </jsp:body>
 </t:pageTemplate>

@@ -14,6 +14,7 @@ import com.datapad.base.models.ServiceModel;
 import com.datapad.base.service.BaseService;
 import com.datapad.form.SubscriptionForm;
 import com.datapad.page.subscription.model.SubscriptionModel;
+import com.datapad.page.subscriptionType.model.SubscrptionTypeMetaModel;
 import com.datapad.page.subscriptionType.model.SubscrptionTypeModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -27,8 +28,13 @@ public class SubscriptionService {
 	@Value("${endpoint.createSubcriptionURL}")
 	public String createSubcriptionURL;
 	
-	@Value("${endpoint.retrieveSubscriptionTypeByDomainURL}")
-	public String retrieveSubscriptionTypeByDomainURL;
+	@Value("${endpoint.subscriptionTypeURL}")
+	public String subscriptionTypeURL;
+	
+	@Value("${endpoint.domain.subscriptionTypeURL}")
+	public String domainSubscriptionTypeURL;
+	
+	
 	
 	@Value("${endpoint.retrieveSubscriptionByStatusURL}")
 	public String retrieveSubscriptionByStatusURL;
@@ -78,12 +84,30 @@ public class SubscriptionService {
 	 * @return
 	 */
 	public SubscrptionTypeModel getSubscriptionTypeByDomain(String domainId) {
-		String endpointURL = retrieveSubscriptionTypeByDomainURL+DataPodConstant.SLASH+domainId;
+		String endpointURL = domainSubscriptionTypeURL+DataPodConstant.SLASH+domainId;
 		Map<String, Object> params = new HashMap<String, Object>();
 		ServiceModel serviceModel = new ServiceModel.ServiceModelBuilder()
 				.serviceURL(endpointURL).params(params).isUseTokenAuth(false)
 				.contentType(MediaType.APPLICATION_JSON).build();
 		SubscrptionTypeModel response = baseService.doGet(serviceModel, SubscrptionTypeModel.class);
+		return response;
+	}
+	
+	public SubscrptionTypeMetaModel createSubscriptionType(SubscrptionTypeMetaModel subscriptionType) {
+		Map<String, String> params = new HashMap<>();
+		params.put(DataPodConstant.NAME, subscriptionType.getName());
+		params.put(DataPodConstant.DESCRIPTION, subscriptionType.getDescription());
+		params.put(DataPodConstant.DOMAIN_ID, subscriptionType.getDomainId());
+		params.put(DataPodConstant.COST, subscriptionType.getCost());
+		params.put(DataPodConstant.DATA_MAX_USAGE, subscriptionType.getDataMaxUsage());
+		params.put(DataPodConstant.DATA_MIN_USAGE, subscriptionType.getDataMinUsage());
+		params.put(DataPodConstant.TIME_MAX_USAGE, subscriptionType.getTimeMaxUsage());
+		params.put(DataPodConstant.TIME_MIN_USAGE, subscriptionType.getTimeMinUsage());
+		
+		ServiceModel serviceModel = new ServiceModel.ServiceModelBuilder()
+				.serviceURL(subscriptionTypeURL).params(params).isUseTokenAuth(true)
+				.contentType(MediaType.APPLICATION_JSON).build();
+		SubscrptionTypeMetaModel response = baseService.doPost(serviceModel, SubscrptionTypeMetaModel.class);
 		return response;
 	}
 	

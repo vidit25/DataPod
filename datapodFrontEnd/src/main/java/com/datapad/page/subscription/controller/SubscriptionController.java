@@ -24,6 +24,7 @@ import com.datapad.page.domains.model.DomainModel;
 import com.datapad.page.domains.service.DomainService;
 import com.datapad.page.subscription.model.SubscriptionModel;
 import com.datapad.page.subscription.service.SubscriptionService;
+import com.datapad.page.subscriptionType.model.SubscrptionTypeMetaModel;
 import com.datapad.page.subscriptionType.model.SubscrptionTypeModel;
 
 /**
@@ -100,4 +101,21 @@ public class SubscriptionController {
 		LOGGER.info("SUCCESS.." + genericModel.isSuccess());
 		return "subscription/enquiry";
 	}
+	
+	@PostMapping(value = "/subscriptionType")
+	public String createSubscriptionType(@ModelAttribute SubscrptionTypeMetaModel subscriptionTypeModel, Model model) {
+		SubscrptionTypeMetaModel subscriptionTypeMetaModel = subscriptionService.createSubscriptionType(subscriptionTypeModel);
+		model.addAttribute("newSubscriptionType", new SubscrptionTypeMetaModel());
+//		String domainID = subscriptionTypeModel.getDomainId();
+		return getSubscriptionTypeForDomain(model, subscriptionTypeModel.getDomainId());
+	}
+	
+	@RequestMapping(value = "/subscriptionType/{id}", method = RequestMethod.GET)
+	public String getSubscriptionTypeForDomain(Model model,@PathVariable("id") String id) {
+		SubscrptionTypeModel response = getSubscriptionTypeByDomainId(id);
+		model.addAttribute("response", response);
+		model.addAttribute("newSubscriptionType", new SubscrptionTypeMetaModel());
+		return "subscription/subscription-type";
+	}
+	
 }

@@ -28,5 +28,17 @@ public interface DataPodConstant {
 	public static final String DESCRIPTION = "description";
 	
 	public static final String DOMAIN_ID = "domainId";
+	
+	public static final String COST = "cost";
+	
+	public static final String DATA_MIN_USAGE = "dataMinUsage";
+	
+	public static final String DATA_MAX_USAGE = "dataMaxUsage";
+	
+	public static final String TIME_MIN_USAGE = "timeMinUsage";
+	
+	public static final String TIME_MAX_USAGE = "timeMaxUsage";
+	
+	public static final String FEATURES = "features";
 
 }
