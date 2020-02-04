@@ -15,6 +15,8 @@
 	   <br/>
 	   <br/>
 	   <a href="/list-subscription">Subscriptions</a>
-	   
+	   <br/>
+	   <br/>
+	   <a href="/load-functional-data">CDE Functional Data</a>
     </jsp:body>
 </t:pageTemplate>

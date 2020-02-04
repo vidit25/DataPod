@@ -5,9 +5,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <t:pageTemplate>
-  
-  
    <jsp:body>
+     <br/> <br/>
+   		<a href="/">Back to HOME</a>
+  <br/> <br/>
 	   <header class="align-center">
 	      <h2>Enquiry Form</h2>
 	   </header>
