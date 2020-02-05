@@ -20,8 +20,6 @@ public class CriticalDataElementTools {
 	@Autowired
 	private CriticalDataElementRepository criticalDataElementRepository;
 	
-	
-	
 	/**
 	 * 
 	 * @param subDomainIds
@@ -32,6 +30,16 @@ public class CriticalDataElementTools {
 		return criticalDataElements;
 	}
 
+	/**
+	 * 
+	 * @param accountId
+	 * @return
+	 * @throws GenericDaoException
+	 */
+	public List<DpCriticalDataElement>  retrieveAssociatedFunctionalData(Integer accountId) throws GenericDaoException {
+		List<DpCriticalDataElement> criticalDataElements = criticalDataElementRepository.retrieveAssociatedCDEByAccount(accountId);
+		return criticalDataElements;
+	}
 
 
 	
