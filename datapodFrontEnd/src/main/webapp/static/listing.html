@@ -1,0 +1,292 @@
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Domains - Datapod</title>
+    <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="plugins/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet">
+    <link href="plugins/fancybox/jquery.fancybox.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- BEGIN WRAPPER -->
+    <div id="wrapper" class="console">
+        <div class="container page-container">
+            <!-- START OF SIDE MENU -->
+            <div class="side-menu">
+                <div class="logo">
+                    <a href="index.html">                       
+                     <img src="img/datapod-logo.png">
+					</a>
+                </div>
+                <div class="xs-sidemenu-toggle visible-xs">
+                    <a href="javascript:;" class="btn-toggle-sidemenu"><i class="fa fa-bars"></i></a>
+                </div>
+                <div class="main-menu">
+                    <ul>
+                        <li><a href=""><i class="fa fa-dashboard"></i>Dashboard</a></li>
+                        <li><a href=""><i class="fa fa-user"></i>Subscriptions</a></li>
+                        <li><a href=""><i class="fa fa-bookmark-o"></i>Domains</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- END OF SIDE MENU -->
+            <div class="content-panel">
+                <!-- BEGIN HEADER -->
+                <header class="header hidden-xs clearfix">
+                    <div class="toggle-sidemenu">
+                        <a href="javascript:;" class="btn-toggle-sidemenu"><i class="fa fa-bars"></i></a>
+                    </div>
+                    
+                    <!--  <div class="header-btn filter-btn">
+                        <a href="#" class="btn-filter"><i class="fa fa-filter"></i>Filter<i class="fa fa-caret-down"></i></a>
+                    </div> -->
+                    <div class="header-btn user-btn">
+                        <a href="#" class="btn-user">Datapod admin<i class="fa fa-ellipsis-v"></i></a>
+                    </div>
+                </header>
+                <!-- END HEADER -->
+                <div class="page-contents page-client">
+                    <div class="content-header">
+                        <h1>Domains <a href="#" class="link-inline">(Create New Domain)</a></h1>
+                    </div>
+                    <div class="contents">
+                        <div class="row content-title">
+                            <div class="col-md-12 col-xs-7">
+
+                            </div>
+                            <!--  <div class="col-md-4 col-xs-5 filter-btn visible-xs">
+                                <a href="#" class="btn-filter"><i class="fa fa-filter"></i>Filtrar<i class="fa fa-caret-down"></i></a>
+                            </div> -->
+                        </div>
+                        <div class="content">
+                            
+                            <div class="table table-striped table-clients">
+                                <div class="thead sort">
+                                    <div class="t-row">
+                                        <div class="th"></div>
+                                        <div class="th">Name <i class="fa fa-caret-down"></i></div>
+                                        <div class="th">Description <i class="fa fa-caret-down"></i></div>
+                                        <div class="th">Status <i class="fa fa-caret-down"></i></div>
+                                        <div class="th">Created Date</div>
+                                    </div>
+                                </div>
+                                <div class="tbody">
+                                    <div class="t-row">
+                                        <div class="">
+                                            <label for="checkThis1"></label>
+                                        </div>
+                                        <div><a href="#">Banking</a></div>
+                                        <div>Banking domain</div>
+                                        <div>Active</div>
+                                        <div>25/01/2017</div>
+                                    </div>
+                                    <div class="t-row">
+                                        <div class="">
+                                            <label for="checkThis1"></label>
+                                        </div>
+                                        <div><a href="#">Banking</a></div>
+                                        <div>Banking domain</div>
+                                        <div>Active</div>
+                                        <div>25/01/2017</div>
+                                    </div>
+                                    <div class="t-row">
+                                        <div class="">
+                                            <label for="checkThis1"></label>
+                                        </div>
+                                        <div><a href="#">Banking</a></div>
+                                        <div>Banking domain</div>
+                                        <div>Active</div>
+                                        <div>25/01/2017</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="load-more visible-xs">
+                                <a href="#" class="btn-load-more">Mostrar Más</a>
+                            </div>
+                            <div class="table-pagination clearfix hidden-xs">
+                                <ul class="pagination">
+                                    <li class="prev disable"><a href="#"><i class="fa fa-angle-left"></i>Anterior</a></li>
+                                    <li><a href="#">1</a></li>
+                                    <li class="dots"><a href="javascript:;">...</a></li>
+                                    <li><a href="#">6</a></li>
+                                    <li class="active"><a href="#">7</a></li>
+                                    <li><a href="#">8</a></li>
+                                    <li class="dots"><a href="javascript:;">...</a></li>
+                                    <li><a href="#">18</a></li>
+                                    <li class="next"><a href="#">Siguiente<i class="fa fa-angle-right"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Confirmation Modal -->
+        <div id="confirmationModal" class="modal fade modal-confirm-box" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-msg warning clearfix">
+                            <div class="msg-icon"><i class="fa fa-exclamation-triangle"></i></div>
+                            <div class="msg-content">¿Está seguro que quiere RECHAZAR estas cuentas?</div>
+                        </div>
+                        <div class="action-btns">
+                            <a href="#" class="btn-cancel">Cancelar</a>
+                            <input type="submit" class="btn btn-secondary" value="Sí, acepto">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="modal fade modal-success" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-msg success clearfix">
+                            <div class="msg-icon">:)</div>
+                            <div class="msg-content">Hemos cambiado exitosamente el estado de la(s) cuenta(s) seleccionada(s)</div>
+                        </div>
+                        <div class="action-btns">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- SIMULATOR MODAL -->
+        <div id="simulatorModal" class="modal fade task-modal simulator-modal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i></button>
+                    </div>
+                    <div class="modal-body clearfix">
+                        <div class="title">
+                            <h2>Simulador</h2>
+                        </div>
+                        <form id="simulatorForm" class="form type-2" action="" method="POST">
+                            <div class="clearfix">
+                                <div class="form-group col-left">
+                                    <label for="tipoVehicle" class="control-label">Tipo de vehiculo</label>
+                                    <div class="select-control">
+                                        <select id="tipoVehicle" class="form-control select" required="" aria-required="true">
+                                            <option value="" disabled="" selected="">Seleccione</option>
+                                            <option value="1">Normal</option>
+                                            <option value="2">Reagendar</option>
+                                            <option value="3">Option 3</option>
+                                            <option value="4">Option 4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-right">
+                                    <label for="membership" class="control-label">Membresía</label>
+                                    <div class="select-control">
+                                        <select id="membership" class="form-control select" required="" aria-required="true">
+                                            <option value="" disabled="" selected="">Seleccione</option>
+                                            <option value="1">Normal</option>
+                                            <option value="2">Reagendar</option>
+                                            <option value="3">Option 3</option>
+                                            <option value="4">Option 4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix time-use">
+                            	<div class="time-block">
+                            		<div class="main-title">
+                            			<h4>Tiempo en uso</h4>
+                            		</div>
+                            		<div class="form-group col-left">
+										<label for="timeHrs" class="control-label">Horas</label>
+										<input type="text" id="timeHrs" class="form-control" required="" aria-required="true" placeholder="Ej: 00">
+									</div>
+									<div class="col-mid">
+										:
+									</div>
+									<div class="form-group col-right">
+										<label for="timeMins" class="control-label">Minutos</label>
+										<input type="text" id="timeMins" class="form-control" required="" aria-required="true" placeholder="Ej: 59">
+									</div>
+                            	</div>
+                            	<div class="time-block">
+                            		<div class="main-title">
+                            			<h4>Tiempo estacionado</h4>
+                            		</div>
+                            		<div class="form-group col-left">
+										<label for="timeHrs" class="control-label">Horas</label>
+										<input type="text" id="timeHrs" class="form-control" required="" aria-required="true" placeholder="Ej: 00">
+									</div>
+									<div class="col-mid">
+										:
+									</div>
+									<div class="form-group col-right">
+										<label for="timeMins" class="control-label">Minutos</label>
+										<input type="text" id="timeMins" class="form-control" required="" aria-required="true" placeholder="Ej: 59">
+									</div>
+                            	</div>
+                            	<div class="time-block">
+                            		<div class="main-title">
+                            			<h4>Distancia recorrida</h4>
+                            		</div>
+                            		<div class="form-group col-left">
+										<label for="kms" class="control-label">Kms.</label>
+										<input type="text" id="kms" class="form-control" required="" aria-required="true" placeholder="155">
+									</div>
+
+                            	</div>
+                            </div>
+                            <div class="clearfix cost">
+                            	<div class="cost-block">
+                            		<div class="form-group">
+										<label for="cost" class="control-label">Costo Extra</label>
+										<input type="text" id="cost" class="form-control" required="" aria-required="true" placeholder="">
+									</div>
+                            	</div>
+                            	<div class="desc">
+                            		<p>Se mostrará un costo estimado sujeto a cambio. La tarifa incluye combustible, tags y seguro.</p>
+                            	</div>		
+                            </div>
+                            <div class="cost-total">
+                            	<span class="strong">Costo estimado:</span>
+                            	<span class="price"><span>$</span> 40.000</span>
+                            </div>
+                            <div class="row">
+                                <div class="action-btns">                                    
+                                    <a href="javascript:;" class="btn btn-secondary" id="calculate">Calcular</a>
+                                    <a href="javascript:;" class="btn btn-secondary" id="backCalc">volver a Calcular</a>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="msg flat warning">
+							<p>Recuerde que si un viaje ha utilizado más de 50kms. dentro de 24 hrs. se calculará con tarifa de Kilómetro Extra.</p>
+						</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END WRAPPER -->
+
+    <script src="plugins/jquery/jquery-3.1.1.min.js"></script>
+    <script src="plugins/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script src="plugins/jquery-validation/js/additional-methods.min.js"></script>
+    <script src="plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js"></script>
+    <script src="plugins/fancybox/jquery.fancybox.min.js"></script>
+    <script src="js/base.js"></script>
+</body>
+
+</html>

@@ -172,17 +172,3 @@ ALTER TABLE  datapoddb.dp_user ADD CONSTRAINT dp_user_acc_id_fk FOREIGN KEY (acc
 
 
 
-CREATE TABLE `datapoddb`.`dp_cde` (
-  `data_element_id` INT NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(45) NULL,
-  `description` VARCHAR(250) NULL,
-  `sub_domain_id` INT NULL,
-  PRIMARY KEY (`data_element_id`),
-  INDEX `sub_domain_id_idx` (`sub_domain_id` ASC) VISIBLE,
-  CONSTRAINT `sub_domain_id`
-    FOREIGN KEY (`sub_domain_id`)
-    REFERENCES `datapoddb`.`sub_domains` (`sub_domain_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-	ENGINE = InnoDB;
-
