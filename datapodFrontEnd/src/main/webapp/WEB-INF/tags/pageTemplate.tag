@@ -10,13 +10,24 @@
    </head>
    
    <body class="subpage">
-      <%@ include file="header.jspf" %>
-
-      <section class="wrapper">
-         <div class="inner">
+	<div id="wrapper" class="console">
+		<div class="container page-container">
+			<%@ include file="sideMenu.jspf" %>
+			<div class="content-panel">
+			<!-- BEGIN HEADER -->
+			<header class="header hidden-xs clearfix">
+				<div class="toggle-sidemenu">
+					<a href="javascript:;" class="btn-toggle-sidemenu"><i class="fa fa-bars"></i></a>
+				</div>
+				
+				<div class="header-btn user-btn">
+					<a href="#" class="btn-user">Datapod admin<i class="fa fa-ellipsis-v"></i></a>
+				</div>
+			</header>			
             <jsp:doBody/>
+            </div>
          </div>
-      </section>
+     </div>
          
       <%@ include file="footer.jspf" %>
       

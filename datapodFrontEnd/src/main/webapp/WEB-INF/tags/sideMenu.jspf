@@ -1,0 +1,18 @@
+<!-- START OF SIDE MENU -->
+<div class="side-menu">
+	<div class="logo">
+		<a href="index.html"><img src="${pageContext.request.contextPath}/static/img/datapod_logo.png"></a>
+	</div>
+	<div class="xs-sidemenu-toggle visible-xs">
+		<a href="javascript:;" class="btn-toggle-sidemenu"><i class="fa fa-bars"></i></a>
+	</div>
+	<div class="main-menu">
+		<ul>
+			<li><a href="${pageContext.request.contextPath}/dashboard"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+            <li><a href="${pageContext.request.contextPath}/list-subscription"><i class="fa fa-user"></i>Subscriptions</a></li>
+            <li><a href="${pageContext.request.contextPath}/domain"><i class="fa fa-bookmark-o"></i>Domains</a></li>
+			<li><a href="${pageContext.request.contextPath}/load-functional-data"><i class="fa fa-bookmark-o"></i>CDE</a></li>
+			
+		</ul>
+	</div>
+</div>
