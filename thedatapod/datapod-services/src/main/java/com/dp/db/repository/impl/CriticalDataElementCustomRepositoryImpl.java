@@ -42,6 +42,20 @@ public class CriticalDataElementCustomRepositoryImpl implements CriticalDataElem
 		return criticalDataElements;
 	}
 
+	/**
+	 * 
+	 * @param accountId
+	 * @return
+	 * @throws GenericDaoException
+	 */
+	public List<DpCriticalDataElement> retrieveAssociatedCDEByAccount(Integer accountId) throws GenericDaoException {
+		List<DpCriticalDataElement> criticalDataElements = null;
+		Query query=entityManager.createNativeQuery("select cde.* from datapoddb.dp_meta_data_cde data, datapoddb.dp_cde cde, datapoddb.account acct\n" + 
+				"where data.data_element_id=cde.data_element_id and acct.account_id=:accountId", DpCriticalDataElement.class);
+		query.setParameter("accountId", accountId);
+		criticalDataElements = query.getResultList();
+		return criticalDataElements;
+	}
 	 
 
 	

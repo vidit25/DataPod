@@ -1,6 +1,10 @@
-      <script src="${pageContext.request.contextPath}/assets/js/jquery.min.sj"></script>
-      <script src="${pageContext.request.contextPath}/assets/js/skel.min.sj"></script>
-      <script src="${pageContext.request.contextPath}/assets/js/util.sj"></script>
-      <script src="${pageContext.request.contextPath}/assets/js/main.sj"></script>
-
-      <jsp:invoke fragment="additionalJs"/>
+<!-- END WRAPPER -->
+<script src="${pageContext.request.contextPath}/static/plugins/jquery/jquery-3.1.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/plugins/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/plugins/jquery-validation/js/additional-methods.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/plugins/fancybox/jquery.fancybox.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/base.js"></script>
+<jsp:invoke fragment="additionalJs"/>

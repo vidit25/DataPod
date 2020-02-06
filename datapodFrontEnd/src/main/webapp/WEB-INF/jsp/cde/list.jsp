@@ -11,7 +11,7 @@
   
   	<br/> <br/>
 	   <header class="align-center">
-	      <h2>CDE Functional Data :  STEP 2</h2>
+	      <h2>CDE Functional Data : STEP 2</h2>
 	   </header>
 	    <form:form action="/associateFunctionalData" modelAttribute="functionalDataForm">
 	    	<br/>
@@ -33,9 +33,9 @@
    				 </td>
 	   				<td style='width:160px;'>
 	   				<b>Group 2:</b><br/>
-	    	<form:select path="dataElementIds" id="dataElementIds" multiple="true">
+	    			<form:select path="dataElementIds" id="dataElementIds" multiple="true">
 	   				
-	   			</form:select>
+	   				</form:select>
 	   			</td>
 	   		</tr>	
 	   		</table>

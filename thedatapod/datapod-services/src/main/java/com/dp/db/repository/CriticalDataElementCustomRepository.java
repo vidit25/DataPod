@@ -18,6 +18,14 @@ public interface CriticalDataElementCustomRepository {
 	 */
 	public List<DpCriticalDataElement> getCDEBySubDomain( List<Integer> subDomainIds) throws GenericDaoException;
 	
+	/**
+	 * 
+	 * @param accountId
+	 * @return
+	 * @throws GenericDaoException
+	 */
+	public List<DpCriticalDataElement> retrieveAssociatedCDEByAccount(Integer accountId) throws GenericDaoException;
+	
 	
 	
 	

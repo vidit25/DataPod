@@ -170,3 +170,8 @@ ALTER TABLE  datapoddb.user_authorities ADD CONSTRAINT user_authorities_user_ FO
 ALTER TABLE  datapoddb.dp_user ADD COLUMN account_id INT ;
 ALTER TABLE  datapoddb.dp_user ADD CONSTRAINT dp_user_acc_id_fk FOREIGN KEY (account_id) REFERENCES datapoddb.account (account_id);
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> branch 'services-develop' of https://github.com/vidit25/DataPod.git

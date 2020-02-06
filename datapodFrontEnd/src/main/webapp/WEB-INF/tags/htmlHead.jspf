@@ -1,5 +1,9 @@
-      <title>Spring Boot - WAR Archive with JSTL Template</title>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
-      <jsp:invoke fragment="additionalCss"/> 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard - Datapod</title>
+<link href="${pageContext.request.contextPath}/static/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/static/plugins/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/static/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/static/plugins/fancybox/jquery.fancybox.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/static/css/styles.css" rel="stylesheet">
+<jsp:invoke fragment="additionalCss"/> 
