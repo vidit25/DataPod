@@ -43,6 +43,17 @@ public class AccountCustomRepositoryImpl implements AccountCustomRepository {
 		}
 		return null;
 	}
+	
+	@Override
+	public DpAccount getAccountBasedOnAccountId(String accountId) throws GenericDaoException {
+		Query query = entityManager.createNativeQuery("SELECT * FROM account " + "WHERE account_id = ?", DpAccount.class);
+		query.setParameter(1, accountId);
+		List users = query.getResultList();
+		if (users != null && !users.isEmpty()) {
+			return (DpAccount) users.get(0);
+		}
+		return null;
+	}
 
 	
 }

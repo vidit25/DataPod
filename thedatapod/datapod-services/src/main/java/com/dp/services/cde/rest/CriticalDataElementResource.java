@@ -1,5 +1,8 @@
 package com.dp.services.cde.rest;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -7,12 +10,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dp.db.model.DpCriticalDataElement;
 import com.dp.services.cde.manager.CriticalDataElementServiceManager;
 import com.dp.services.constants.Error;
+import com.dp.services.exception.GenericDaoException;
 import com.dp.services.response.ErrorResponseVO;
 import com.dp.services.response.GenericResponseVO;
 import com.dp.utils.DpUtils;
@@ -60,6 +67,20 @@ public class CriticalDataElementResource {
 			LOGGER.error(e.getMessage(), e);
 		}
 		return userResponse;
+	}
+	
+	
+	@PostMapping("/api/cde/file/{accountId}")
+	public GenericResponseVO uploadFile(@RequestParam("file") MultipartFile file, @PathVariable String accountId) throws IOException {
+	    GenericResponseVO fileUploadResponse = new GenericResponseVO();
+	    try {
+			criticalDataElementServiceManager.uploadFile(file,accountId);
+		} catch (GenericDaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return fileUploadResponse;
+		
 	}
 
 }

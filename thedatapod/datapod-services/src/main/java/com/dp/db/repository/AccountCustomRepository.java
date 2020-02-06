@@ -15,6 +15,8 @@ public interface AccountCustomRepository {
 	 *             the generic dao exception
 	 */
 	public DpAccount getAccountBasedOnAccountNum(String pAccountNum) throws GenericDaoException;
+
+	public DpAccount getAccountBasedOnAccountId(String accountId) throws GenericDaoException;
 	
 	
 	
