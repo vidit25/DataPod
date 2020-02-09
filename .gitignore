@@ -1,0 +1,8 @@
+/target/
+/.settings/
+/.mvn/
+/bin/
+/.classpath
+/.project
+/acquisition-application.log
+/HELP.md
