@@ -4,5 +4,7 @@
 /bin/
 /.classpath
 /.project
-/acquisition-application.log
+/acquisition-application.log*
 /HELP.md
+/mvnw
+/mvnw.cmd
