@@ -4,9 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dp.acquisition.snowflake.dao.SnowFlakeDao;
+import com.dp.acquisition.snowflake.service.ConfigService;
 
 @Service
 public class SnowFlakeService {
+
+	@Autowired
+	private ConfigService configService;
 
 	@Autowired
 	private SnowFlakeDao sfDao;

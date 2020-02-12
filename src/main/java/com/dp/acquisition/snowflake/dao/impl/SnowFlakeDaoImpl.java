@@ -51,6 +51,8 @@ public class SnowFlakeDaoImpl implements SnowFlakeDao {
 		LOGGER.info("Staged file {} to stage {}", file, stageName);
 	}
 
+	// TODO Have to change the logic here to a merge query conditionally if there is a key else regular insert.
+	//https://support.snowflake.net/s/article/how-to-perform-a-mergeupsert-from-a-flat-file-staged-on-s3
 	@Override
 	public void moveFromStageToTable(String tableName, String stageName, String file) {
 		String stageFileSql = "COPY INTO " + tableName + " from @" + stageName + "/" + file + " FILE_FORMAT=(TYPE=CSV FIELD_DELIMITER=',' SKIP_HEADER=1, FIELD_OPTIONALLY_ENCLOSED_BY='\"') ON_ERROR = ABORT_STATEMENT";
